@@ -33,5 +33,11 @@ public class NFA implements AutomatoFinito {
     public void setAlphabet(ArrayList<String> alphabet){
         this.alphabet = alphabet;
     }
+
+    //Criar método para vizualização do NFA no console
+    public String stringfyNFA(){
+        return "";
+    }
     
 }
+
