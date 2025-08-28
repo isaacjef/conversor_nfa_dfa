@@ -4,6 +4,7 @@ Objetivo: desenvolver um código que receba um arquivo JSON representando um Aut
 Instalar package JSON-Java
 → Fundamentalmente a pasta "org"
 
-## autores: Gabriel Alexandre
+## autores: 
+          Gabriel Alexandre
           Isaac Jerferson
           Raislson Bernardo
