@@ -1,9 +1,9 @@
 package src;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -35,11 +35,9 @@ public class NFA implements AutomatoFinito {
     public NFA(){
     }
 
-    // Passar no parametro da função o Json convertido em String ou Objeto
-    // criar metodos para adicionar os valores a cada atributo corretamente
     /*
-     * 
-     * 
+     * Função de conversão JSONObject para classe NFA
+     * @param JSONObject
      */
     public void NFAfromJSON(JSONObject json) {
         
@@ -53,7 +51,7 @@ public class NFA implements AutomatoFinito {
         
     }
 
-    //Criar método para vizualização do NFA no console
+    //Método para vizualização direta do NFA no console
     @Override
     public String toString(){
 
@@ -64,7 +62,9 @@ public class NFA implements AutomatoFinito {
         text.append("Estados: ").append(states).append("\n");
         text.append("Transições:\n");
         text.append("------------------------\n");
-
+        /*
+         * Aninha todos os pares ESTADO, SIMBOLO → ESTADOS de forma ter uma melhor visualização
+         */
         transiction.entrySet().stream().sorted(Map.Entry.comparingByKey())
         .forEach(entry -> {
             entry.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey())
@@ -109,6 +109,19 @@ public class NFA implements AutomatoFinito {
 
             transiction.computeIfAbsent(estadoInicial, k -> new HashMap<>())
             .put(simbolo, listaEstadosFinais);
+            /*
+             * Explicação: método computeIfAbsent() → Método da interface Map e propõe a obtenção
+             * de um valor e caso ele não exista então crie ele primeiro.
+             * 
+             * .put(...) → método da interface Map e serve para a adicição de um determinado valor
+             * ao Map em questão. Requisitando de 2 parametros: chave e valor.
+             * 
+             * Em resumo: de acordo com estadoInicial e k (simbolos associados os estado em questão)
+             * "q0" atribui a esse como chave do Map externo e
+             * "0", "["q0", "q1"]" e "1", "["q0"]" como valores do Map externo
+             * Enquanto os mesmos "0", "["q0", "q1"]", são chave e valor, respectivamente, do Map interno
+             * O mesmo vale para "1", "["q0"]".
+             */
         }
 
         return transiction;
@@ -160,3 +173,7 @@ public class NFA implements AutomatoFinito {
     
 }
 
+/**
+ * Classe NFA concluída
+ * @author Gabriel Alexandre
+ */

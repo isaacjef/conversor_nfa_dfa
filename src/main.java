@@ -1,4 +1,5 @@
 package src;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class main {
+public class Main {
     /*
      *  Função principal de execução
      * 
@@ -20,7 +21,6 @@ public class main {
         JSONObject jsonObject;
         JSONParser parser = new JSONParser();
         ArrayList<NFA> listaNFA = new ArrayList<NFA>();
-
 
         /*
          * Pensei de fazer assim pois dessa forma dá para tratar um possivel erro no diretório
@@ -42,7 +42,7 @@ public class main {
 
                 listaNFAJsonArray = new JSONArray();
                 listaNFAJsonArray.add(objetoJSon);
-                
+
             } else
                 listaNFAJsonArray = (JSONArray) objetoJSon;
 

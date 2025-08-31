@@ -4,8 +4,12 @@ Objetivo: desenvolver um código que receba um arquivo JSON representando um Aut
 Instalar biblioteca "json-simple"
 → Fundamentalmente arquivo "json-simple-1.1.1.jar"
 
+# Objetivos:
+    [ X ] **Criar conversor .json em NFA;**
+    [   ] **Criar metodo para criação do conjunto das partes;**
+    [   ] **Criar conversor NFA em DFA.**
 
-## autores: 
+### autores: 
           Gabriel Alexandre
           Isaac Jerferson
           Raislson Bernardo
