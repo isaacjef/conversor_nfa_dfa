@@ -1,10 +1,14 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class DFA implements AutomatoFinito {
 
@@ -41,12 +45,75 @@ public class DFA implements AutomatoFinito {
          * do NFA em um DFA. Seguindo os passos da sala de aula.
          */
 
+        // Atribuição dos valores comuns entre NFA e DFA
+        this.alphabet = nfa1.getAlphabet();
+        this.end_state = nfa1.getEnd_state();
+        this.states = nfa1.getStates();
+        this.initial_state = nfa1.getInitial_state();
+
         
-        // Passo 2
+        // Passo 2:  Criar todas as combinações possíveis entre os estados
         ArrayList<Object> teste = gerarConjunto(nfa1.getStates());
 
-        // Passo 1
+        // Passo 1: Definir a quantidade de estados do DFA
         teste.size();
+
+        // Passo 3: Definir a transição de cada estado
+        Map<Object, Map<String, List<String>>> matriz = new HashMap<>();
+        ArrayList<String> estadosInitalEnd = new ArrayList<>();
+
+        
+        for (Object chavePrincipal : teste) {
+
+            Map<String, List<String>> matrizAux = new HashMap<>();
+            Set<String> endList = new HashSet<>();
+
+            for (String alphabet : this.alphabet) {
+                
+                // Verifica se chaveprincipal de busca é do tipo List, para tratar quando "null"
+                if (chavePrincipal instanceof List) {
+                    List<String> chavePrincList = (List<String>) chavePrincipal;
+
+                    // Percorre cada valor contido na
+                    for (String estadoNFA : chavePrincList) {
+                        
+                        List<String> end = 
+                        nfa1.getTransiction().getOrDefault(estadoNFA, Collections.emptyMap()).get(alphabet);
+                        
+                        if (end != null) {
+                            endList.addAll(end);
+                        }
+                    }
+                }
+
+                List<String> destinoFinal = new ArrayList<>(endList);
+                Collections.sort(destinoFinal);
+
+                matrizAux.put(alphabet, destinoFinal);
+
+            }
+
+            matriz.put(chavePrincipal, matrizAux);
+
+            // Passo 4: Definir o estado inicial e os estados finais
+            if (chavePrincipal instanceof List) {
+
+                if (!Collections.disjoint((List<String>) chavePrincipal, this.end_state)) 
+                    estadosInitalEnd.add("*");
+
+                else if (((List<String>) chavePrincipal).equals(Arrays.asList(this.initial_state)))
+                    estadosInitalEnd.add("->");
+                
+            }  
+        }
+
+
+        // Passo 5: Renomear o conjunto de estados
+        Map<String, ArrayList<Object>> tabelaRenomeda = new HashMap<>();
+
+        // Retornar atribuição da função de trancição
+        // transiction.computeIfAbsent(initial, k -> new HashMap<>())
+        //     .put(simbolo, listaEstadosFinais);
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json

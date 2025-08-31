@@ -89,15 +89,15 @@ public class NFA implements AutomatoFinito {
         for (Object objRegra : jsonArray) {
 
             JSONObject regra = (JSONObject) objRegra;
-            String estadoInicial = (String) regra.get("initial");
+            String initial = (String) regra.get("initial");
             String simbolo = (String) regra.get("symbol");
-            Object estadosFinaisObj = regra.get("end");
+            Object endObj = regra.get("end");
 
             List<String> listaEstadosFinais = new ArrayList<>();
 
-            if (estadosFinaisObj instanceof JSONArray){
+            if (endObj instanceof JSONArray){
                 // Tratar a TIPAGEM da variavel para mitigação de erros
-                JSONArray endArray = (JSONArray) estadosFinaisObj;
+                JSONArray endArray = (JSONArray) endObj;
 
                 //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
                 for (Object estadoFinal : endArray) {
@@ -109,7 +109,7 @@ public class NFA implements AutomatoFinito {
                 }
             }
 
-            transiction.computeIfAbsent(estadoInicial, k -> new HashMap<>())
+            transiction.computeIfAbsent(initial, k -> new HashMap<>())
             .put(simbolo, listaEstadosFinais);
             /*
              * Explicação: método computeIfAbsent() → Método da interface Map e propõe a obtenção
@@ -118,7 +118,7 @@ public class NFA implements AutomatoFinito {
              * .put(...) → método da interface Map e serve para a adicição de um determinado valor
              * ao Map em questão. Requisitando de 2 parametros: chave e valor.
              * 
-             * Em resumo: de acordo com estadoInicial e k (simbolos associados os estado em questão)
+             * Em resumo: de acordo com initial e k (simbolos associados os estado em questão)
              * "q0" atribui a esse como chave do Map externo e
              * "0", "["q0", "q1"]" e "1", "["q0"]" como valores do Map externo
              * Enquanto os mesmos "0", "["q0", "q1"]", são chave e valor, respectivamente, do Map interno
