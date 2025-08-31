@@ -97,14 +97,29 @@ public class DFA implements AutomatoFinito {
 
             // Passo 4: Definir o estado inicial e os estados finais
             if (chavePrincipal instanceof List) {
+                boolean isInitial = false;
+                boolean isFinal = false;
 
                 if (!Collections.disjoint((List<String>) chavePrincipal, this.end_state)) 
-                    estadosInitalEnd.add("*");
+                    isInitial = true;
 
                 else if (((List<String>) chavePrincipal).equals(Arrays.asList(this.initial_state)))
-                    estadosInitalEnd.add("->");
+                    isFinal = true;
+
+                if (isInitial && isFinal) 
+                    estadosInitalEnd.add("->*");
                 
-            }  
+                else if (isInitial)
+                    estadosInitalEnd.add("->");
+
+                else if (isFinal)
+                    estadosInitalEnd.add("*");
+
+                else
+                    estadosInitalEnd.add("");
+                
+            } 
+            
         }
 
 

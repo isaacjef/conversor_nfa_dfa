@@ -7,7 +7,8 @@ Instalar biblioteca "json-simple"
 # Objetivos:
     [ X ] **Criar conversor .json em NFA;**
     [ X ] **Criar metodo para criação do conjunto das partes;**
-    [   ] **Criar conversor NFA em DFA.**
+    [   ] **Criar conversor NFA em DFA.
+    [   ] **Criar conversor de DFA para .json
 
 ### autores: 
           Gabriel Alexandre
