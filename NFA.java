@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
 
 public class NFA implements AutomatoFinito {

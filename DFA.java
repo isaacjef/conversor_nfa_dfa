@@ -27,7 +27,7 @@ public class DFA implements AutomatoFinito {
         this.transiction = transiction;
     }
 
-    //Construtor para inicializar DFA vazio
+    // Construtor para inicializar DFA vazio
     public DFA(){
     }
 
@@ -37,6 +37,11 @@ public class DFA implements AutomatoFinito {
          * Desenvolver a linha de código responsavel pela converção
          * do NFA em um DFA. Seguindo os passos da sala de aula.
          */
+    }
+
+    // Conversor de DFa em Json, ao final deve gerar o arquivo json
+    public void DFAtoJson(){
+
     }
 
     //Criar método para vizualização do DFA no console
