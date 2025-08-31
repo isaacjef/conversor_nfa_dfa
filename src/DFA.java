@@ -42,7 +42,11 @@ public class DFA implements AutomatoFinito {
          */
 
         
+        // Passo 2
         ArrayList<Object> teste = gerarConjunto(nfa1.getStates());
+
+        // Passo 1
+        teste.size();
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
