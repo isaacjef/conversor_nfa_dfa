@@ -55,6 +55,7 @@ public class NFA implements AutomatoFinito {
         this.alphabet = alphabet;
     }
 
+<<<<<<< HEAD
     public ArrayList<String> getEnd_state() {
         return this.end_state;
     }
@@ -88,5 +89,12 @@ public class NFA implements AutomatoFinito {
     }
 
     
+=======
+    //Criar método para vizualização do NFA no console
+    public String stringfyNFA(){
+        return "";
+    }
+>>>>>>> ef9a5f572cf6eb355482abf260a7eb6578a0c8e7
     
 }
+
