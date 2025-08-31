@@ -47,7 +47,6 @@ public class Main {
                 listaNFAJsonArray = (JSONArray) objetoJSon;
 
             // Itera JSONArray e converte em NFA segundo método definido na própria classe
-            // Necessário definir a função NFAfromJSON
             for (Object obj : listaNFAJsonArray) {
 
                 jsonObject = (JSONObject) obj;

@@ -53,7 +53,7 @@ public class NFA implements AutomatoFinito {
 
     //Método para vizualização direta do NFA no console
     @Override
-    public String toString(){
+    public String toString() {
 
         StringBuilder text = new StringBuilder();
 

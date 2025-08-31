@@ -1,6 +1,7 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,9 @@ public class DFA implements AutomatoFinito {
          * Desenvolver a linha de código responsavel pela converção
          * do NFA em um DFA. Seguindo os passos da sala de aula.
          */
+
+        
+        ArrayList<Object> teste = gerarConjunto(nfa1.getStates());
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
@@ -50,6 +54,50 @@ public class DFA implements AutomatoFinito {
     @Override
     public String toString(){
         return "";
+    }
+
+    /*
+     * Função geradora do Conjunto das parte de determinado NFA
+     * @param Estados do NFA a ser convertido
+     */
+    public static ArrayList<Object> gerarConjunto(ArrayList<String> states) {
+
+        ArrayList<List<String>> conjuntoDasPartes = new ArrayList<>();
+        conjuntoDasPartes.add(new ArrayList<>()); //Inicializa como conjunto vazio
+
+        // Percorre cada elemento do ArrayList inicial "states"
+        for (String state : states) {
+
+            List<List<String>> conjuntoAux = new ArrayList<>();
+
+            // Percorre cada subconjunto já existente no ArrayList princial "conjuntosDasPartes"
+            for (List<String> conjuntoAux_2 : conjuntoDasPartes) {
+
+                List<String> conjuntoAux_3 = new ArrayList<>(conjuntoAux_2);
+                conjuntoAux_3.add(state);
+                conjuntoAux.add(conjuntoAux_3);
+
+            }
+
+            conjuntoDasPartes.addAll(conjuntoAux);
+
+        }
+
+        // Organiza cada elemento com relação ao tamanha do array que o compõem.
+        conjuntoDasPartes.sort(Comparator.comparingInt(List::size));
+
+        ArrayList<Object> conjuntoOrganizado = new ArrayList<>();
+        for (List<String> aux : conjuntoDasPartes) {
+
+            if (aux.isEmpty())
+                conjuntoOrganizado.add("null");
+            else
+                conjuntoOrganizado.add(aux);
+
+        }
+        //conjuntoDasPartes.forEach(aux -> aux.isEmpty() ? resultadoFormatado.add("null"): resultadoFormatado.add(aux));
+
+        return conjuntoOrganizado;
     }
 
     /*
