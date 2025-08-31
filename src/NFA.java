@@ -39,10 +39,12 @@ public class NFA implements AutomatoFinito {
      * Função de conversão JSONObject para classe NFA
      * @param JSONObject
      */
+    @SuppressWarnings("unchecked")
     public void NFAfromJSON(JSONObject json) {
         
         // Atribuindo valores aos atributos da classe
         // Verificar questão da TIPAGEM das variaveis para mitigação de erros
+        // Caso de haver garantia na tipagem do json não se faz necessário corrigir
         setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
         setStates(new ArrayList<>((JSONArray) json.get("states")));
         setInitial_state((String) json.get("initial_state"));
