@@ -22,6 +22,7 @@ public class Main {
         JSONObject jsonObject;
         JSONParser parser = new JSONParser();
         ArrayList<NFA> listaNFA = new ArrayList<NFA>();
+        ArrayList<DFA> listaDFA = new ArrayList<DFA>();
 
         /*
          * Pensei de fazer assim pois dessa forma dá para tratar um possivel erro no diretório
@@ -52,8 +53,13 @@ public class Main {
 
                 jsonObject = (JSONObject) obj;
                 NFA nfaExemplo = new NFA();
+                DFA dfaExemplo = new DFA();
+
                 nfaExemplo.NFAfromJSON(jsonObject);
+                dfaExemplo.DFAfromNFA(nfaExemplo);
+
                 listaNFA.add(nfaExemplo);
+                listaDFA.add(dfaExemplo);
 
             }
 
@@ -61,6 +67,9 @@ public class Main {
 
                 System.out.printf("========= NFA %d =========\n", i+1);
                 System.out.print(listaNFA.get(i));
+
+                System.out.printf("========= DFA %d =========\n", i+1);
+                System.out.print(listaDFA.get(i));
 
             }
 

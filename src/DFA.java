@@ -38,7 +38,10 @@ public class DFA implements AutomatoFinito {
     public DFA(){
     }
 
-    // Consversor do DFA a partir de um NFA
+    /*
+     * Consversor do DFA a partir de um NFA
+     * @param NFA que deseja converter em um DFA
+     */
     public void DFAfromNFA(NFA nfa1){
         /*
          * Desenvolver a linha de código responsavel pela converção
@@ -126,9 +129,9 @@ public class DFA implements AutomatoFinito {
         // Passo 5: Renomear o conjunto de estados
         Map<String, ArrayList<Object>> tabelaRenomeda = new HashMap<>();
 
-        // Retornar atribuição da função de trancição
-        // transiction.computeIfAbsent(initial, k -> new HashMap<>())
-        //     .put(simbolo, listaEstadosFinais);
+        // Passo 6: Descartar os estados inacessíveis
+        
+
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
@@ -138,8 +141,32 @@ public class DFA implements AutomatoFinito {
 
     //Criar método para vizualização do DFA no console
     @Override
-    public String toString(){
-        return "";
+    public String toString() {
+
+        StringBuilder text = new StringBuilder();
+
+        //text.append("========= NFA =========\n"); //Adicionar titulo do NFA do for de leitura
+        text.append("Alfabeto: ").append(alphabet).append("\n");
+        text.append("Estados: ").append(states).append("\n");
+        text.append("Transições:\n");
+        text.append("------------------------\n");
+        /*
+         * Aninha todos os pares ESTADO, SIMBOLO → ESTADOS de forma ter uma melhor visualização
+         */
+        transiction.entrySet().stream().sorted(Map.Entry.comparingByKey())
+        .forEach(entry -> {
+            entry.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey())
+            .forEach(trans -> {
+                String saida = trans.getValue().isEmpty() ? "null" : trans.getValue().toString();
+                text.append(String.format("| (%s, %s) | %s\n", entry.getKey(), trans.getKey(), saida));});
+        });
+        text.append("\r------------------------\n");
+        text.append("Estado Inicial: ").append(initial_state).append("\n");
+        text.append("Estados Finais: ").append(end_state).append("\n");        
+        text.append("========================\n\n");
+
+        return text.toString();
+
     }
 
     /*
