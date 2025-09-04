@@ -194,7 +194,7 @@ public class DFA implements AutomatoFinito {
      * Função geradora do Conjunto das parte de determinado NFA
      * @param Estados do NFA a ser convertido
      */
-    public static ArrayList<Object> gerarConjunto(ArrayList<String> states) {
+    public ArrayList<Object> gerarConjunto(ArrayList<String> states) {
 
         ArrayList<List<String>> conjuntoDasPartes = new ArrayList<>();
         conjuntoDasPartes.add(new ArrayList<>()); //Inicializa como conjunto vazio

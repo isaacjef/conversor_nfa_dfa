@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -104,7 +105,6 @@ public class NFA implements AutomatoFinito {
                     if (estadoFinal != null && !"null".equals(estadoFinal.toString())) {
                         listaEstadosFinais.add(estadoFinal.toString());
                     }
-
                 }
             }
 

@@ -1,11 +1,8 @@
 package src;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -23,6 +20,15 @@ public class Main {
         JSONParser parser = new JSONParser();
         ArrayList<NFA> listaNFA = new ArrayList<NFA>();
         ArrayList<DFA> listaDFA = new ArrayList<DFA>();
+        ArrayList<String> a = new ArrayList<String>();
+
+        a.add("a");
+        a.add("b");
+        a.add("c");
+
+        DFA ababa = new DFA();
+        System.out.println(ababa.gerarConjunto(a));
+
 
         /*
          * Pensei de fazer assim pois dessa forma dá para tratar um possivel erro no diretório
@@ -32,7 +38,7 @@ public class Main {
          * 
          * Fica a critério qual usaremos.
          */
-        System.out.print("Informe o diretório do JSON: ");
+        /*System.out.print("Informe o diretório do JSON: ");
         diretorioString = sc.nextLine();
 
         try {
@@ -94,11 +100,12 @@ public class Main {
 
             sc.close();
             
-        }
+        }*/
 
     }
 
 }
+
 
 /**
  *
