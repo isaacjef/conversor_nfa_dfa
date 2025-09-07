@@ -1,5 +1,7 @@
 package src;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -26,9 +28,9 @@ public class Main {
         a.add("b");
         a.add("c");
 
-        DFA ababa = new DFA();
-        System.out.println(ababa.gerarConjunto(a));
-
+        DFA dfa = new DFA();
+        NFA nfa = new NFA();
+        //System.out.println(ababa.gerarConjunto(a));
 
         /*
          * Pensei de fazer assim pois dessa forma dá para tratar um possivel erro no diretório
@@ -38,13 +40,22 @@ public class Main {
          * 
          * Fica a critério qual usaremos.
          */
-        /*System.out.print("Informe o diretório do JSON: ");
-        diretorioString = sc.nextLine();
+        //System.out.print("Informe o diretório do JSON: ");
+        //diretorioString = sc.nextLine();
 
         try {
+            Object aaaa = parser.parse(new FileReader("C:\\Users\\Pichau\\Desktop\\conversor_nfa_dfa\\exemploNFA.json"));
+            JSONObject obj = (JSONObject) aaaa;
+            nfa.NFAfromJSON(obj);
+            dfa.DFAfromNFA(nfa);
+            //tratar key
+            /*JSONArray listaT = (JSONArray) obj.get("transiction");
+
+
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
             JSONArray listaNFAJsonArray;
 
+            
             if(objetoJSON instanceof JSONObject) {
                 listaNFAJsonArray = new JSONArray();
                 listaNFAJsonArray.add(objetoJSON);
@@ -70,7 +81,7 @@ public class Main {
 
                 System.out.printf("========= DFA %d =========\n", i+1);
                 System.out.print(listaDFA.get(i));
-            }
+            }*/
 
         } catch (FileNotFoundException f) {
 
@@ -93,14 +104,10 @@ public class Main {
             } 
 
         } catch (Exception e) {
-
                 System.out.print("Não sei qual erro!");
-
         } finally {
-
-            sc.close();
-            
-        }*/
+            sc.close(); 
+        }
 
     }
 

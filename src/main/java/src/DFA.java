@@ -54,7 +54,6 @@ public class DFA implements AutomatoFinito {
         this.states = nfa1.getStates();
         this.initial_state = nfa1.getInitial_state();
 
-        
         // Passo 2:  Criar todas as combinações possíveis entre os estados
         ArrayList<Object> teste = gerarConjunto(nfa1.getStates());
     
@@ -68,28 +67,23 @@ public class DFA implements AutomatoFinito {
         for (Object chavePrincipal : teste) {
 
             Map<String, List<String>> matrizAux = new HashMap<>();
-            Set<String> endList = new HashSet<>();
 
             for (String alpha : this.alphabet) {
-                
+                Set<String> endList = new HashSet<>();
+
                 // Verifica se chaveprincipal de busca é do tipo List, para tratar quando "null"
                 if (chavePrincipal instanceof List) {
                     List<String> chavePrincList = (List<String>) chavePrincipal;
                     List<String> end = new ArrayList<>();
 
-                    //System.out.println(chavePrincList);
                     // Percorre cada valor contido na matriz/tabela de estados possiveis
                     for (String estadoNFA : chavePrincList) {
-                        //System.out.println("FORA: " + chavePrincList + " | " + estadoNFA);
-                        System.out.println("Estado NFA: " + chavePrincList + " | Alfabeto " + alpha);
                         end = 
                         nfa1.getTransiction().getOrDefault(estadoNFA, Collections.emptyMap()).get(alpha);
-                        System.out.println("TRANSICAO: " + nfa1.getTransiction().getOrDefault(estadoNFA, Collections.emptyMap()).get(alpha));
-                        System.out.println("TRANSICAO end: " + end);
+
                         if (end != null) {
                             endList.addAll(end);
-                            //System.out.println("TRANSICAO endList: " + endList);
-                        }  
+                        } 
                     }
                 }
 
@@ -101,8 +95,8 @@ public class DFA implements AutomatoFinito {
             }
 
             matriz.put(chavePrincipal, matrizAux);
-            System.out.println(matriz);
-            // Passo 4: Definir o estado inicial e os estados finais -----------------------------
+
+            // Passo 4: Definir o estado inicial e os estados finais ----
             if (chavePrincipal instanceof List) {
                 boolean isInitial = false;
                 boolean isFinal = false;
@@ -166,9 +160,9 @@ public class DFA implements AutomatoFinito {
                 }/
          * 
          */
-        /*Map<String, Map<String, String>> passo6 = new HashMap<>();
+        Map<String, Map<String, String>> passo6 = new HashMap<>();
         String renomear = "";
-        String aba="";
+        String chave_estado="";
         //{ Código Teste Isaac
         //Análogo ao FOR de cima
         for (Object chavePrincipal : teste) {
@@ -179,34 +173,39 @@ public class DFA implements AutomatoFinito {
 
                 //System.out.println("aba: " + aba);
                 List<String> list_aux = matriz.get(chavePrincipal).get(alpha);
-                System.out.println("aba: " + matriz.get(chavePrincipal));
+                //System.out.println("aba: " + matriz.get(chavePrincipal));
                 //System.out.println("List aux: " + list_aux);
-                if (chavePrincipal == null || list_aux.contains("")) {
-                    renomear = "A0";
-                } else {
-                    renomear = (tabelaRenomeada.get(list_aux));
-                }
+                
+                renomear = (tabelaRenomeada.get(list_aux));
                 //System.out.println("List aux: " + list_aux);
                 //Map<String, List<String>> matrizAux2 = new HashMap<>();
                 // if (tabelaRenomeada.containsKey(list_aux)) {
                 //     renomear = (tabelaRenomeada.get(list_aux));
                 //     //System.out.println("List aux: " + renomear);
                 // }
-                matrizAux2.put(alpha, renomear);
+                if (chavePrincipal == null || list_aux.contains("")) {
+                    renomear = "A0";
+                    matrizAux2.put(alpha, renomear);
+                } else {
+                    renomear = (tabelaRenomeada.get(list_aux));
+                    matrizAux2.put(alpha, renomear);
+                }
+
                 //System.out.println("matriz aux: " + matrizAux2);
                 //passo6.put(aba, matrizAux2);
             }
-            aba = tabelaRenomeada.get(chavePrincipal);
-            passo6.put(aba, matrizAux2);
+
+            chave_estado = tabelaRenomeada.get(chavePrincipal);
+            passo6.put(chave_estado, matrizAux2);
         }
         
         //Passo 7: Atribuir resultado ao atributo this.transiction
 
-        System.out.println("Todas as combinações: " + teste);
+        //System.out.println("Todas as combinações: " + teste);
         System.out.println("Estados possiveis, entradas e saídas: " + matriz);
         //System.out.println("Estados inicial final: " + estadosInitalEnd);
         System.out.println("\nTabela renomeada: " + tabelaRenomeada);
-        System.out.println("\nResultado final: " + passo6);*/
+        System.out.println("\nResultado final: " + passo6);//*/
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
