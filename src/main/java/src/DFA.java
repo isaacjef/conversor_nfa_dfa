@@ -2,6 +2,7 @@ package src;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -107,7 +108,6 @@ public class DFA implements AutomatoFinito {
             i++;
         }
 
-        System.out.println(estadosRenomeados + "\n");
 
         Map<String, Map<String, String>> tabelaRenomeada = new HashMap<>();
         String renomear = "";
@@ -161,36 +161,44 @@ public class DFA implements AutomatoFinito {
 
         // Passo 6: Descartar os estados inacessíveis
         ArrayList<String> estadosAcessiveis = new ArrayList<>();
-        Map<String, String> auc = tabelaRenomeada.get(this.initial_state);
-        estadosAcessiveis.add(this.initial_state);
-        int cont=0;
+        Set<String> statesVisitado = new HashSet<String>();
+        List<String> statesNaoPercorridos = new ArrayList<String>();
+        statesNaoPercorridos.add(this.initial_state);
+        statesVisitado.add(this.initial_state);
 
-        System.out.println("Tabelha renomeada: " + tabelaRenomeada);
+        for (int ij = 0; ij < statesNaoPercorridos.size(); ij++) {
+            String currentState = statesNaoPercorridos.get(ij);
 
-        do {
-            cont=0;
+            // Verifica se o estado atual tem transições definidas no grafo.
+            if (tabelaRenomeada.containsKey(currentState)) {
+                // Pega a coleção de todos os possíveis estados seguintes.
+                Collection<String> nextStates = tabelaRenomeada.get(currentState).values();
 
-            for (String alpha : this.alphabet) {    
-                if(!estadosAcessiveis.contains(auc.get(alpha))){
-                    estadosAcessiveis.add(auc.get(alpha));
+                // Itera sobre cada estado seguinte usando um enhanced for-loop (forEach).
+                for (String nextState : nextStates) {
+                    // Se o estado seguinte ainda não foi visitado...
+                    if (!statesVisitado.contains(nextState)) {
+                        // ...o adicionamos ao conjunto de visitados e à lista para ser processado mais tarde.
+                        statesVisitado.add(nextState);
+                        statesNaoPercorridos.add(nextState);
+                    }
                 }
-                else
-                    cont++;
-
-                auc = tabelaRenomeada.get(auc.get(alpha));
             }
+        }
+        estadosAcessiveis.addAll(statesVisitado);
 
-        } while (cont<this.alphabet.size());
+        //System.out.println("\nEstados renomeada: " + estadosRenomeados);
+        System.out.println("\nTabela renomeada: " + tabelaRenomeada);
+        System.out.println("\nAcessiveis: " + estadosAcessiveis);
         
-        System.out.println("Estado acessiveis: " + estadosAcessiveis);
 
         for (String chavePrincipal : this.states) {
-            cont=0;
             
-            if(!estadosAcessiveis.contains(chavePrincipal)){
+            if(!estadosAcessiveis.contains(chavePrincipal)) {
                 tabelaRenomeada.remove(chavePrincipal);
                 this.end_state.remove(chavePrincipal);
             }
+
         }
 
         this.states = estadosAcessiveis;
@@ -201,8 +209,6 @@ public class DFA implements AutomatoFinito {
         //System.out.println("Estados possiveis, entradas e saídas: " + matriz);
         //System.out.println("Estados inicial final: " + estadosInitalEnd);
         //System.out.println("\nTabela renomeada: " + estadosRenomeados);
-        System.out.println("\nEstado final: " + this.end_state);
-        System.out.println("\nResultado final: " + tabelaRenomeada);
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
