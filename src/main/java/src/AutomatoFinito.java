@@ -18,8 +18,8 @@ public interface AutomatoFinito {
     public void setInitial_state(String param);
 
     //Map<String, Map<String, List<String>>> transicoes = new HashMap<>();
-    public Map<String, Map<String, List<String>>> getTransiction();
-    public void setTransiction(Map<String, Map<String, List<String>>> param);
+    // public Map<String, Map<String, List<String>>> getTransiction();
+    // public void setTransiction(Map<String, Map<String, List<String>>> param);
 
     //public String stringfy();
 

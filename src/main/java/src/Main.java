@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -40,16 +41,16 @@ public class Main {
          * 
          * Fica a critério qual usaremos.
          */
-        //System.out.print("Informe o diretório do JSON: ");
-        //diretorioString = sc.nextLine();
+        System.out.print("Informe o diretório do JSON: ");
+        diretorioString = sc.nextLine();
 
         try {
-            Object aaaa = parser.parse(new FileReader("exemploNFA.json"));
-            JSONObject obj = (JSONObject) aaaa;
-            nfa.NFAfromJSON(obj);
-            dfa.DFAfromNFA(nfa);
-            //tratar key
-            /*JSONArray listaT = (JSONArray) obj.get("transiction");
+            // Object aaaa = parser.parse(new FileReader("exemploNFA.json"));
+            // JSONObject obj = (JSONObject) aaaa;
+            // nfa.NFAfromJSON(obj);
+            // dfa.DFAfromNFA(nfa);
+            // //tratar key
+            // JSONArray listaT = (JSONArray) obj.get("transiction");
 
 
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
@@ -81,7 +82,7 @@ public class Main {
 
                 System.out.printf("========= DFA %d =========\n", i+1);
                 System.out.print(listaDFA.get(i));
-            }*/
+            }
 
         } catch (FileNotFoundException f) {
 
