@@ -133,14 +133,7 @@ public class DFA implements AutomatoFinito {
 
         // Passo 6: Descartar os estados inacessíveis
         /*
-         * Exemplo de acesso a tipo de estado, se é inicial e/ou final:
-         * for (int i; i < n; i++){
-         *      estadosInitialEnd.get(i);
-         *      matriz.get(i);
-         * }
          * 
-         * Como eles são atribuídos igualmente durante as iterações do for (Object chavePrincipal : teste)
-         * Seus valores ja estão alinhados e se referem a mesma linha da própria matriz. 
          * Fazendo a leitura de forma adequada teremos o retorno do tipo:
          * 
           Estado         | 0         | 1         |
