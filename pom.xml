@@ -17,11 +17,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20250517</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <properties>
