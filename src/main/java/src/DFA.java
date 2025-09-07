@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class DFA implements AutomatoFinito {
     private ArrayList<String> states = new ArrayList<>();
     private String initial_state="";
     private Map<String, Map<String, List<String>>> transiction = new HashMap<>();
+    Map<Object, String> tabelaRenomeada;
 
     //Contrutor padrão do DFA
     public DFA(ArrayList<String> alphabet,
@@ -55,16 +57,15 @@ public class DFA implements AutomatoFinito {
         this.initial_state = nfa1.getInitial_state();
 
         // Passo 2:  Criar todas as combinações possíveis entre os estados
-        ArrayList<Object> teste = gerarConjunto(nfa1.getStates());
+        ArrayList<Object> combinacoes = gerarConjunto(nfa1.getStates());
     
         // Passo 1: Definir a quantidade de estados do DFA
-        teste.size();
+        combinacoes.size();
 
         // Passo 3: Definir a transição de cada estado
         Map<Object, Map<String, List<String>>> matriz = new HashMap<>();
-        ArrayList<String> estadosInitialEnd = new ArrayList<>();
 
-        for (Object chavePrincipal : teste) {
+        for (Object chavePrincipal : combinacoes) {
 
             Map<String, List<String>> matrizAux = new HashMap<>();
 
@@ -95,42 +96,59 @@ public class DFA implements AutomatoFinito {
             }
 
             matriz.put(chavePrincipal, matrizAux);
-
-            // Passo 4: Definir o estado inicial e os estados finais ----
-            if (chavePrincipal instanceof List) {
-                boolean isInitial = false;
-                boolean isFinal = false;
-
-                if (!Collections.disjoint((List<String>) chavePrincipal, this.end_state)) 
-                    isInitial = true;
-
-                else if (((List<String>) chavePrincipal).equals(Arrays.asList(this.initial_state)))
-                    isFinal = true;
-
-                if (isInitial && isFinal) 
-                    estadosInitialEnd.add("->*");
-                
-                else if (isInitial)
-                    estadosInitialEnd.add("->");
-
-                else if (isFinal)
-                    estadosInitialEnd.add("*");
-
-                else
-                    estadosInitialEnd.add("");
-            } 
         }
 
+        this.renomear_estados(combinacoes, matriz);
+    }
+
+    public void renomear_estados(ArrayList<Object> combinacoes, Map<Object, Map<String, List<String>>> matriz) {
         // Passo 5: Renomear o conjunto de estados
-        Map<Object, String> tabelaRenomeada = new HashMap<>();
+
+        //Map<Object, String> tabelaRenomeada
+        tabelaRenomeada = new HashMap<>();
         int i = 0;
 
-        for (Object chavePrincipal : teste) {
+        for (Object chavePrincipal : combinacoes) {
             String name = "A" + i;
             tabelaRenomeada.put(chavePrincipal, name);
             i++;
         }
 
+        Map<String, Map<String, String>> passo5 = new HashMap<>();
+        String renomear = "";
+        String chave_estado = "";
+  
+        //Análogo ao FOR de cima
+        for (Object chavePrincipal : combinacoes) {
+
+            Map<String, String> matrizAux2 = new HashMap<>();
+
+            for (String alpha : this.alphabet) {
+                List<String> list_aux = matriz.get(chavePrincipal).get(alpha);
+
+                renomear = tabelaRenomeada.get(list_aux);
+
+                if (renomear == null) {
+                    matrizAux2.put(alpha, "A0");
+                } else {
+                    matrizAux2.put(alpha, renomear);
+                }
+            }
+
+            chave_estado = tabelaRenomeada.get(chavePrincipal);
+            passo5.put(chave_estado, matrizAux2);
+        }
+        
+        //System.out.println("Todas as combinações: " + teste);
+        //System.out.println("Estados possiveis, entradas e saídas: " + matriz);
+        //System.out.println("Estados inicial final: " + estadosInitalEnd);
+        //System.out.println("\nTabela renomeada: " + tabelaRenomeada);
+
+        //return passo5;
+        this.deletar_inacessiveis(passo5);
+    }
+
+    public void deletar_inacessiveis(Map<String, Map<String, String>> passo5) {
         // Passo 6: Descartar os estados inacessíveis
         /*
          * Exemplo de acesso a tipo de estado, se é inicial e/ou final:
@@ -159,51 +177,65 @@ public class DFA implements AutomatoFinito {
                     tabelaRenomeda.put(alphabet, teste)
                 }/
          * 
-         */
-        Map<String, Map<String, String>> passo6 = new HashMap<>();
-        String renomear = "";
-        String chave_estado="";
-        //{ Código Teste Isaac
-        //Análogo ao FOR de cima
-        for (Object chavePrincipal : teste) {
+        */
+        List<String> novos_estados = new ArrayList<>(tabelaRenomeada.values());
+        //List<String> estados_aux = new ArrayList<>(novos_estados);
+        System.out.println("\novos estados: " + novos_estados);
 
-            Map<String, String> matrizAux2 = new HashMap<>();
-
+        for (String estado : novos_estados) {
+            
             for (String alpha : this.alphabet) {
+                Iterator<String> iterator = novos_estados.iterator();
+                int ax = 0;
+                int i = 0;
+                while (i < novos_estados.size()) {
+                    //iterator.hasNext()
+                    //String elemento = iterator.next();
 
-                //System.out.println("aba: " + aba);
-                List<String> list_aux = matriz.get(chavePrincipal).get(alpha);
-                //System.out.println("matriz.get(chave): " + matriz.get(chavePrincipal));
-                //System.out.println("List aux: " + list_aux);
-                
-                //Map<String, List<String>> matrizAux2 = new HashMap<>();
-                // if (tabelaRenomeada.containsKey(list_aux)) {
-                //     renomear = (tabelaRenomeada.get(list_aux));
-                //     //System.out.println("List aux: " + renomear);
-                // }
-                renomear = tabelaRenomeada.get(list_aux);
-                System.out.println("renomear: " + renomear);
-                if (renomear == null) {
-                    matrizAux2.put(alpha, "A0");
-                } else {
-                    matrizAux2.put(alpha, renomear);
+                    //Ex: A0 -> {0, A0} {1, A0}, false, false.
+                    if (estado.equals(passo5.get(novos_estados.get(i)).get(alpha))) {
+                        System.out.println("As entradas bateram!");
+                    } else {
+                        System.out.println("As entradas não batem!");
+                        ax++;
+                    }
+
+                    if (ax == novos_estados.size()) {
+                        novos_estados.remove(estado);
+                    }
+                    i++;
+                    System.out.println("Ax: " + ax);
                 }
 
-                //System.out.println("matriz aux: " + matrizAux2);
-                //passo6.put(aba, matrizAux2);
+                // Iterator<String> iterator = lista.iterator();
+                // String elemento = iterator.next();
+                // estados_aux.forEach(var -> {
+                //     if (estado.equals(passo5.get(var).get(alpha))) {
+                //         System.out.println("As entradas bateram! " + estado);
+                //         //System.out.println("As entradas bateram! " + estado);
+                //     } else {
+                //         System.out.println("As entradas não batem!");
+
+                //     }
+                // });
+
+                /*
+                 * estados_aux.forEach(var -> {
+                        if (estado.equals(passo5.get(estado).get(alpha))) {
+                            System.out.println("As entradas bateram!");
+                        } else {
+                            System.out.println("As entradas não batem!");
+                            ax = 1;
+                        }
+                    });
+                 */
+
             }
-
-            chave_estado = tabelaRenomeada.get(chavePrincipal);
-            passo6.put(chave_estado, matrizAux2);
         }
-        
-        //Passo 7: Atribuir resultado ao atributo this.transiction
 
-        //System.out.println("Todas as combinações: " + teste);
-        System.out.println("Estados possiveis, entradas e saídas: " + matriz);
-        //System.out.println("Estados inicial final: " + estadosInitalEnd);
-        System.out.println("\nTabela renomeada: " + tabelaRenomeada);
-        System.out.println("\nResultado final: " + passo6);//*/
+        System.out.println("\nResultado final: " + passo5);
+
+        //Passo 7: Atribuir resultado ao atributo this.transiction
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
