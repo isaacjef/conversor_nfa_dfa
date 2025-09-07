@@ -45,11 +45,15 @@ public class NFA implements AutomatoFinito {
         // Atribuindo valores aos atributos da classe
         // Verificar questão da TIPAGEM das variaveis para mitigação de erros
         // Caso de haver garantia na tipagem do json não se faz necessário corrigir
-        setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
-        setStates(new ArrayList<>((JSONArray) json.get("states")));
-        setInitial_state((String) json.get("initial_state"));
-        setEnd_state(new ArrayList<>((JSONArray) json.get("end_state")));
-        setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
+        try{
+            setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
+            setStates(new ArrayList<>((JSONArray) json.get("states")));
+            setInitial_state((String) json.get("initial_state"));
+            setEnd_state(new ArrayList<>((JSONArray) json.get("end_state")));
+            setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Valor ilegal no atributo do NFA");
+        }
         
     }
 
@@ -136,16 +140,38 @@ public class NFA implements AutomatoFinito {
         return this.alphabet;
     }
 
-    public void setAlphabet(ArrayList<String> alphabet){
-        this.alphabet = alphabet;
+    @SuppressWarnings("unchecked")
+    @Override
+    public void setAlphabet(Object alphabet){
+
+        // Verificações condicionais para tudo, garantido tipagem correta dos valores
+        if (alphabet instanceof List){
+            ArrayList<?> alphabet0 = (ArrayList<?>) alphabet;
+            int cont=0;
+            for (Object precorrer : alphabet0){
+                if(precorrer instanceof String) {
+                    cont++;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+
+            }
+
+            if(cont==alphabet0.size()) {
+                this.alphabet = (ArrayList<String>) alphabet0;
+            }
+            
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public ArrayList<String> getEnd_state() {
         return this.end_state;
     }
 
-    public void setEnd_state(ArrayList<String> end_state) {
-        this.end_state = end_state;
+    public void setEnd_state(Object end_state) {
+        this.end_state = (ArrayList<String>) end_state;
     }
 
     public ArrayList<String> getStates() {

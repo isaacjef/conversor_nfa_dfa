@@ -1,5 +1,5 @@
 {
- "alphabet": ["0", "1"],
+ "alphabet": ["0", 1],
  "states": ["q0", "q1", "q2"],
  "transiction": [
  {"initial": "q0", "symbol": "0", "end": ["q0", "q1"]},
