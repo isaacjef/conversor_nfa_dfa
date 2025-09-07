@@ -44,7 +44,7 @@ public class Main {
         //diretorioString = sc.nextLine();
 
         try {
-            Object aaaa = parser.parse(new FileReader("C:\\Users\\Pichau\\Desktop\\conversor_nfa_dfa\\exemploNFA.json"));
+            Object aaaa = parser.parse(new FileReader("exemploNFA.json"));
             JSONObject obj = (JSONObject) aaaa;
             nfa.NFAfromJSON(obj);
             dfa.DFAfromNFA(nfa);
