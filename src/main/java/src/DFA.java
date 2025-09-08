@@ -451,12 +451,8 @@ public final class DFA implements AutomatoFinito {
     @Override
     public void setInitial_state(Object initial_state) {
         if(initial_state instanceof String string) {
-            if(this.getStates().contains(string))
-                this.initial_state = string;
-            else
-                throw new IllegalArgumentException("Estado inicial não existente nos Estados do DFA! ");
-        }
-        else {
+            this.initial_state = string;
+        } else {
             throw new IllegalArgumentException("Estado inicial inválido! Não é do tipo String. ");
         }
     }
