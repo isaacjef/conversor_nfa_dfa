@@ -40,6 +40,7 @@ public class Main {
         try {
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
             JSONArray listaNFAJsonArray = new JSONArray();
+            int cont=0;
             
             if(objetoJSON instanceof JSONArray jSONArray) 
                 listaNFAJsonArray = jSONArray;
@@ -60,6 +61,7 @@ public class Main {
                 //chavestestar.containsAll(jsonObject.keySet());
                 nfaExemplo.NFAfromJSON(jsonObject);
                 dfaExemplo.DFAfromNFA(nfaExemplo);
+                dfaExemplo.DFAtoJson(""+cont);
 
                 listaNFA.add(nfaExemplo);
                 listaDFA.add(dfaExemplo);
