@@ -29,12 +29,12 @@ public class DFA implements AutomatoFinito {
             
         try {
             setAlphabet(alphabet);
-            this.end_state = end_state;
-            this.states = states;
-            this.initial_state = initial_state;
-            this.transiction = transiction;
+            setEnd_state(end_state);
+            setStates(states);
+            setInitial_state(initial_state);
+            setTransictionD(transiction);
         } catch (IllegalArgumentException e){
-
+            System.out.println("Impossivel criar DFA!");
         }
         
     }
@@ -59,6 +59,7 @@ public class DFA implements AutomatoFinito {
         try{
             setAlphabet(nfa1.getAlphabet());
             setEnd_state(nfa1.getEnd_state());
+            setInitial_state(nfa1.getInitial_state());
         } catch (IllegalArgumentException e) {
             System.out.println("Valor ilegal no atributo do DFA");
         }
@@ -75,6 +76,8 @@ public class DFA implements AutomatoFinito {
 
         // Passo 2:  Criar todas as combinações possíveis entre os estados
         ArrayList<Object> teste = gerarConjunto(nfa1.getStates());
+        //System.out.println(teste + "\n" + teste.size());
+
     
         // Passo 1: Definir a quantidade de estados do DFA
         teste.size();
@@ -139,9 +142,10 @@ public class DFA implements AutomatoFinito {
             if (chavePrincipal instanceof List) {
 
                 List<String> estadoAtual = (List<String>) chavePrincipal;
-
+                //System.out.println("Estado inicial: " + trava_initalstate);
                 if (estadoAtual.equals(Arrays.asList(trava_initalstate))){
-                    this.initial_state = estadosRenomeados.get(Arrays.asList(this.initial_state));
+                    
+                    setInitial_state(estadosRenomeados.get(Arrays.asList(this.initial_state)));
                 }
                 
                 for (String end_stateAux : trava_endstate)
@@ -216,9 +220,10 @@ public class DFA implements AutomatoFinito {
             }
 
         }
+        //System.out.println(tabelaRenomeada);
 
-        this.states = estadosAcessiveis;
-        this.transiction = tabelaRenomeada;
+        setEnd_state(estadosAcessiveis);
+        setTransictionD(tabelaRenomeada);
 
         //System.out.println("Todas as combinações: " + teste);
         //System.out.println("Estados possiveis, entradas e saídas: " + matriz);
@@ -338,13 +343,23 @@ public class DFA implements AutomatoFinito {
         return this.end_state;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void setEnd_state(Object end_state) {
+
+        // Verificações condicionais para tudo, garantido tipagem correta dos valores
         if (end_state instanceof List){
-            this.end_state = (ArrayList<String>) end_state;
-        } else 
-            throw new IllegalArgumentException();
-        
+            ArrayList<?> end_state0 = (ArrayList<?>) end_state;
+            int cont=0;
+            for (Object precorrer : end_state0)
+                if(precorrer instanceof String)
+                    cont++;
+
+            if(cont==end_state0.size())
+                this.end_state = (ArrayList<String>) end_state0;
+            else
+                throw new IllegalArgumentException();
+        }
     }
 
     @Override
@@ -352,9 +367,30 @@ public class DFA implements AutomatoFinito {
         return this.states;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void setStates(ArrayList<String> states) {
-        this.states = states;
+    public void setStates(Object states) {
+
+        /*
+         * Nota: É de extrema importancia que esta função não seja modificada
+         * sua estrutura da forma como esta é chave para conversão NFA -> DFA
+         * caso julgue necessário criar outra função setStatesX()
+         */
+
+        // Verificações condicionais para tudo, garantido tipagem correta dos valores
+        if (states instanceof List){
+            ArrayList<?> states0 = (ArrayList<?>) states;
+            int cont=0;
+            for (Object precorrer : states0)
+                if(precorrer instanceof String)
+                    cont++;
+
+            if(cont==states0.size())
+                this.states = (ArrayList<String>) states0;
+            else
+                throw new IllegalArgumentException();
+        }
+
     }
 
     @Override
@@ -363,8 +399,16 @@ public class DFA implements AutomatoFinito {
     }
 
     @Override
-    public void setInitial_state(String initial_state) {
-        this.initial_state = initial_state;
+    public void setInitial_state(Object initial_state) {
+
+        if(initial_state instanceof String) {
+                this.initial_state = (String) initial_state;
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
+            
+        
     }
 
     public Map<String, Map<String, String>> getTransiction() {

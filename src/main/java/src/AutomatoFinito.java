@@ -10,10 +10,10 @@ public interface AutomatoFinito {
     public void setEnd_state(Object param);
 
     public ArrayList<String> getStates();
-    public void setStates(ArrayList<String> param);
+    public void setStates(Object param);
 
     public String getInitial_state();
-    public void setInitial_state(String param);
+    public void setInitial_state(Object param);
 
 
     //Map<String, Map<String, List<String>>> transicoes = new HashMap<>();
