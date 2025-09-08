@@ -1,5 +1,8 @@
 package src;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,6 +13,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public final class DFA implements AutomatoFinito {
 
@@ -215,7 +222,70 @@ public final class DFA implements AutomatoFinito {
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
-    public void DFAtoJson(){
+    public void DFAtoJson(String nome) {
+        
+        FileWriter writeFile = null;
+
+        Map<String, Object> dfaMap = new HashMap<>();
+        
+        dfaMap.put("alphabet", this.getAlphabet());
+        dfaMap.put("states", this.states);
+        dfaMap.put("transiction", this.converteTransiction());
+        dfaMap.put("initial_state", this.initial_state);
+        dfaMap.put("end_state", this.end_state);
+
+		try {
+
+            String nomeClass = this.getClass().getSimpleName();
+            writeFile = new FileWriter(String.format("%s%sConvertido.json", nomeClass.toLowerCase(), nome));
+            writeFile.write(JSONValue.toJSONString(dfaMap));
+			writeFile.close();
+	
+		}
+
+		//Trata as exceptions que podem ser lançadas no decorrer do processo
+
+		catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+            
+        }
+    }
+
+    // Método auxiliar para salvar manter organização do código
+    @SuppressWarnings("unchecked")
+    private JSONArray converteTransiction() {
+        
+        Map<String, Map<String, String>> transictionMap = this.getTransiction();
+        
+        JSONArray transictionJsonArray = new JSONArray();
+
+        System.out.println(transictionMap.keySet());
+        for (String chave : transictionMap.keySet()) {
+
+            for (String alpha : transictionMap.get(chave).keySet()) {
+
+                JSONObject transictionJsonObject = new JSONObject();
+                //System.out.println("Simbolo: " + alpha);
+
+                transictionJsonObject.put("initial", chave);
+                transictionJsonObject.put("end", transictionMap.get(chave).get(alpha));
+                transictionJsonObject.put("symbol", alpha);
+                transictionJsonArray.add(transictionJsonObject);
+            }
+            //transictionJsonArray.add(transictionJsonObject);
+        }
+        
+        //System.out.println(transictionJsonArray);
+        //transictionJsonArray.add(transictionJsonObject);
+
+        return transictionJsonArray;
 
     }
 
