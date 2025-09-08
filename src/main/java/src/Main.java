@@ -20,7 +20,7 @@ public class Main {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String diretorioString="C:\\Users\\Pichau\\Desktop\\conversor_nfa_dfa\\exemploNFA.json";
+        String diretorioString="C:\\Users\\Pichau\\Desktop\\conversor_nfa_dfa\\";
         JSONObject jsonObject;
         JSONParser parser = new JSONParser();
         ArrayList<NFA> listaNFA = new ArrayList<NFA>();
