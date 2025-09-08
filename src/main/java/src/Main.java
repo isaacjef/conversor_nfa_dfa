@@ -3,8 +3,6 @@ package src;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
@@ -51,11 +49,11 @@ public class Main {
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
             JSONArray listaNFAJsonArray = new JSONArray();
             
-            if(objetoJSON instanceof JSONArray) {
+            if(objetoJSON instanceof JSONArray) 
                 listaNFAJsonArray = (JSONArray) objetoJSON;
-            } else if(objetoJSON instanceof JSONObject){
+
+            else if(objetoJSON instanceof JSONObject)
                 listaNFAJsonArray.add((JSONObject) objetoJSON);
-            }
             
             // Itera JSONArray e converte em NFA segundo método definido na própria classe
             for (Object obj : listaNFAJsonArray) {
@@ -63,16 +61,13 @@ public class Main {
                 NFA nfaExemplo = new NFA();
                 DFA dfaExemplo = new DFA(); 
 
-                List<String> chavestestar = Arrays.asList("alphabet", "states", "transiction", "initial_state", "end_state");;
-
-                //Verifica se contém todas as chaves necessárias para ser considerado NFA
-                if (jsonObject.keySet().containsAll(chavestestar)){
-                    nfaExemplo.NFAfromJSON(jsonObject);
-                    dfaExemplo.DFAfromNFA(nfaExemplo);
-                } else {
-                    System.out.println("Não é um arquivo de json válido!");
-                    return; //Encerra o programa aqui mesmo
-                }
+                //
+                /* Verifica se contém todas as chaves necessárias para ser considerado NFA
+                 * verifica também se não existem chaves a mais no arquivo json
+                 */
+                //chavestestar.containsAll(jsonObject.keySet());
+                nfaExemplo.NFAfromJSON(jsonObject);
+                dfaExemplo.DFAfromNFA(nfaExemplo);
 
                 listaNFA.add(nfaExemplo);
                 listaDFA.add(dfaExemplo);
@@ -94,25 +89,39 @@ public class Main {
             switch (sc.nextLine().toUpperCase()) {
                 case "S":
                      //Chamada para recomeçar programa
-                    System.out.print("\nRecomeçando programa\n");
+                    System.out.print("\nRecomeçando programa...\n");
+                    System.out.println();
+                    main(args);
                     break;
                     
                 case "N":
-                    System.out.print("\nFIM!\n");
+                    System.out.print("\n      FIM!         \n");
+                    System.out.println("      ^.^ bye!         ");
                     break;
                 
                 default:
                     System.out.print("\nOpção não existente!\n");
+                    System.out.println("      ^.^ bye!         ");
+                    //main(args);
                     break;
             } 
 
+        } catch (IndexOutOfBoundsException e) {
+
+            System.out.println("\nMensagem de erro:\nNão é um arquivo de json válido!");
+            System.out.printf("O formato do \"%s\" não segue o padrão estabelecido\n\n", diretorioString);
+
         } catch (Exception e) {
-                System.out.print("Não sei qual erro!");
+
+            System.out.print("Não sei qual erro!");
+
         } finally {
             sc.close(); 
         }
 
     }
+
+    
 
 }
 
