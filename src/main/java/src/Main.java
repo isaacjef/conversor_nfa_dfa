@@ -12,8 +12,7 @@ import org.json.simple.parser.JSONParser;
 public class Main {
     /*
      *  Função principal de execução
-     * 
-     *  
+     *
      */
     //@SuppressWarnings("unchecked")
     @SuppressWarnings("unchecked")
@@ -49,11 +48,11 @@ public class Main {
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
             JSONArray listaNFAJsonArray = new JSONArray();
             
-            if(objetoJSON instanceof JSONArray) 
-                listaNFAJsonArray = (JSONArray) objetoJSON;
+            if(objetoJSON instanceof JSONArray jSONArray) 
+                listaNFAJsonArray = jSONArray;
 
-            else if(objetoJSON instanceof JSONObject)
-                listaNFAJsonArray.add((JSONObject) objetoJSON);
+            else if(objetoJSON instanceof JSONObject jSONObject)
+                listaNFAJsonArray.add(jSONObject);
             
             // Itera JSONArray e converte em NFA segundo método definido na própria classe
             for (Object obj : listaNFAJsonArray) {
@@ -87,23 +86,23 @@ public class Main {
             "Deseja tentar outro?(S | N): ");
             
             switch (sc.nextLine().toUpperCase()) {
-                case "S":
-                     //Chamada para recomeçar programa
+                case "S" -> {
+                    //Chamada para recomeçar programa
                     System.out.print("\nRecomeçando programa...\n");
                     System.out.println();
                     main(args);
-                break;
+                }
                     
-                case "N":
+                case "N" -> {
                     System.out.print("\n      FIM!         \n");
                     System.out.println("      ^.^ bye!         ");
-                break;
+                }
                 
-                default:
+                default -> {
                     System.out.print("\nOpção não existente!\n");
                     System.out.println("      ^.^ bye!         ");
                     //main(args);
-                break;
+                }
             } 
 
         } catch (IndexOutOfBoundsException e) {
@@ -118,11 +117,8 @@ public class Main {
         } finally {
             sc.close(); 
         }
-
     }
-
 }
-
 
 /**
  *

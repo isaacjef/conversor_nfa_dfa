@@ -9,7 +9,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class NFA implements AutomatoFinito {
+public final class NFA implements AutomatoFinito {
 
     //Declaração dos atributos do NFA
     private ArrayList<String> alphabet = new ArrayList<>();
@@ -24,7 +24,6 @@ public class NFA implements AutomatoFinito {
                ArrayList<String> states,
                String initial_state,
                Map<String, Map<String, List<String>>> transiction){
-
         setAlphabet(alphabet);
         setEnd_state(end_state);
         setStates(states);
@@ -49,7 +48,6 @@ public class NFA implements AutomatoFinito {
         List<String> chavestestar = Arrays.asList("alphabet", "states", "transiction", "initial_state", "end_state");
         
         if (json.keySet().containsAll(chavestestar) && chavestestar.containsAll(json.keySet())) {
-
             try{
                 setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
                 setStates(new ArrayList<>((JSONArray) json.get("states")));
@@ -66,12 +64,8 @@ public class NFA implements AutomatoFinito {
                 this.initial_state="";
                 this.transiction = new HashMap<>();
             }
-
         } else
             throw new IndexOutOfBoundsException();
-
-        
-
     }
 
     //Método para vizualização direta do NFA no console
@@ -126,10 +120,7 @@ public class NFA implements AutomatoFinito {
             }
             List<String> listaEstadosFinais = new ArrayList<>();
 
-            if (endObj instanceof JSONArray){
-                // Tratar a TIPAGEM da variavel para mitigação de erros
-                JSONArray endArray = (JSONArray) endObj;
-
+            if (endObj instanceof JSONArray endArray){
                 //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
                 for (Object estadoFinal : endArray) {
 
@@ -138,7 +129,6 @@ public class NFA implements AutomatoFinito {
 
                         if(!this.getStates().contains(estadoFinal))
                             throw new IllegalArgumentException();
-                        
                     }
                 }
             }
@@ -161,12 +151,12 @@ public class NFA implements AutomatoFinito {
         }
 
         return transiction;
-
     }
 
     /*
      * Divisão do código para gets e seters
      */
+    @Override
     public ArrayList<String> getAlphabet(){
         return new ArrayList<>(this.alphabet);
     }
@@ -197,8 +187,9 @@ public class NFA implements AutomatoFinito {
         }
     }
 
+    @Override
     public ArrayList<String> getEnd_state() {
-        return new ArrayList<String>(this.end_state);
+        return new ArrayList<>(this.end_state);
     }
 
     @SuppressWarnings("unchecked")
@@ -223,6 +214,7 @@ public class NFA implements AutomatoFinito {
         }
     }
 
+    @Override
     public ArrayList<String> getStates() {
         return new ArrayList<>(this.states);
     }
@@ -230,8 +222,6 @@ public class NFA implements AutomatoFinito {
     @SuppressWarnings("unchecked")
     @Override
     public void setStates(Object states) {
-
-
         // Verificações condicionais para tudo, garantido tipagem correta dos valores
         if (states instanceof List){
             ArrayList<?> states0 = (ArrayList<?>) states;
@@ -245,23 +235,23 @@ public class NFA implements AutomatoFinito {
             else
                 throw new IllegalArgumentException();
         }
-
     }
 
+    @Override
     public String getInitial_state() {
         return "" + this.initial_state;
     }
 
+    @Override
     public void setInitial_state(Object initial_state) {
         
-        if(initial_state instanceof String) {
-            if(this.getStates().contains((String) initial_state))
-                this.initial_state = (String) initial_state;
+        if(initial_state instanceof String string) {
+            if(this.getStates().contains(string))
+                this.initial_state = string;
             else
                 throw new IllegalArgumentException();
         } else
             throw new IllegalArgumentException();
-
     }
 
     public Map<String, Map<String, List<String>>> getTransiction() {

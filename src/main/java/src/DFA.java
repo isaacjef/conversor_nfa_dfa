@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class DFA implements AutomatoFinito {
+public final class DFA implements AutomatoFinito {
 
     //Declaração dos atributos do DFA
     private ArrayList<String> alphabet = new ArrayList<>();
@@ -302,7 +302,7 @@ public class DFA implements AutomatoFinito {
      */
     @Override
     public ArrayList<String> getAlphabet(){
-        return new ArrayList<String>(this.alphabet);
+        return new ArrayList<>(this.alphabet);
     }
 
     @SuppressWarnings("unchecked")
@@ -327,7 +327,7 @@ public class DFA implements AutomatoFinito {
 
     @Override
     public ArrayList<String> getEnd_state() {
-        return new ArrayList<String>(this.end_state);
+        return new ArrayList<>(this.end_state);
     }
 
     @SuppressWarnings("unchecked")
@@ -349,7 +349,7 @@ public class DFA implements AutomatoFinito {
 
     @Override
     public ArrayList<String> getStates() {
-        return new ArrayList<String>(this.states);
+        return new ArrayList<>(this.states);
     }
 
     @SuppressWarnings("unchecked")
