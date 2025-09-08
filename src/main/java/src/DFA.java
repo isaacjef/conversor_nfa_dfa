@@ -209,14 +209,9 @@ public final class DFA implements AutomatoFinito {
             }
 
         }
-        //System.out.println(tabelaRenomeada);
 
         setStates(estadosAcessiveis);
         setTransictionD(tabelaRenomeada);
-        //System.out.println("\nEstados renomeada: " + estadosRenomeados);
-
-        //System.out.println("\nResultado final: " + tabelaRenomeada);
-
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
@@ -251,7 +246,6 @@ public final class DFA implements AutomatoFinito {
         text.append("========================\n\n");
 
         return text.toString();
-
     }
 
     /*
@@ -259,7 +253,6 @@ public final class DFA implements AutomatoFinito {
      * @param Estados do NFA a ser convertido
      */
     public ArrayList<Object> gerarConjunto(ArrayList<String> states) {
-    //public ArrayList<String> gerarConjunto(ArrayList<String> states) {
 
         ArrayList<List<String>> conjuntoDasPartes = new ArrayList<>();
         conjuntoDasPartes.add(new ArrayList<>()); //Inicializa como conjunto vazio
@@ -319,9 +312,9 @@ public final class DFA implements AutomatoFinito {
             if(cont==alphabet0.size())
                 this.alphabet = (ArrayList<String>) alphabet0;
             else
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Símbolo(s) do Alfabeto inválido(s)! ");
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Alfabeto inválido! ");
         }
     }
 
@@ -343,7 +336,9 @@ public final class DFA implements AutomatoFinito {
             if(cont==end_state0.size())
                 this.end_state = (ArrayList<String>) end_state0;
             else
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Estado final inválido! ");
+        } else {
+            throw new IllegalArgumentException("Estado(s) final(is) inválido(s)! ");
         }
     }
 
@@ -372,7 +367,9 @@ public final class DFA implements AutomatoFinito {
             if(cont==states0.size())
                 this.states = (ArrayList<String>) states0;
             else
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Estado inválido! ");
+        } else {
+            throw new IllegalArgumentException("Conjunto de Estados é inválido! ");
         }
     }
 
@@ -384,10 +381,13 @@ public final class DFA implements AutomatoFinito {
     @Override
     public void setInitial_state(Object initial_state) {
         if(initial_state instanceof String string) {
+            if(this.getStates().contains(string))
                 this.initial_state = string;
+            else
+                throw new IllegalArgumentException("Estado inicial não existente nos Estados do DFA! ");
         }
         else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Estado inicial inválido! Não é do tipo String. ");
         }
     }
 

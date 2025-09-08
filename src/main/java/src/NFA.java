@@ -179,7 +179,7 @@ public final class NFA implements AutomatoFinito {
                 if(percorrer instanceof String) {
                     cont++;
                 } else {
-                    throw new IllegalArgumentException("Símbolo(s) do Alfabeto inválido(s)!");
+                    throw new IllegalArgumentException("Símbolo(s) do Alfabeto inválido(s)! Não são do tipo String. ");
                 }
             }
 
@@ -187,7 +187,7 @@ public final class NFA implements AutomatoFinito {
                 this.alphabet = (ArrayList<String>) alphabet0;
             }
         } else {
-            throw new IllegalArgumentException("Alfabeto inválido! Símbolos não são do tipo String. ");
+            throw new IllegalArgumentException("Alfabeto inválido!  ");
         }
     }
 
