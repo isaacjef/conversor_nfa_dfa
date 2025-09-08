@@ -103,6 +103,7 @@ public class NFA implements AutomatoFinito {
         return text.toString();
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Map<String, List<String>>> parametrizarTransiction(JSONArray jsonArray){
 
         Map<String, Map<String, List<String>>> transiction = new HashMap<>();
@@ -117,7 +118,7 @@ public class NFA implements AutomatoFinito {
             // Ignora função de transição cuja entrada é ínvalida
             List<String> chavestestar = Arrays.asList("initial", "symbol", "end");
 
-            if (regra.keySet().containsAll(chavestestar) && chavestestar.containsAll(regra.keySet()))
+            if (!(regra.keySet().containsAll(chavestestar) && chavestestar.containsAll(regra.keySet())))
                 throw new IndexOutOfBoundsException();
                 
             if(!this.getStates().contains(initial) || !this.getAlphabet().contains(simbolo)){
@@ -129,15 +130,15 @@ public class NFA implements AutomatoFinito {
                 // Tratar a TIPAGEM da variavel para mitigação de erros
                 JSONArray endArray = (JSONArray) endObj;
 
-                if(!this.getStates().containsAll(endArray)){
-                    throw new IllegalArgumentException();
-                }
-
                 //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
                 for (Object estadoFinal : endArray) {
 
                     if (estadoFinal != null && !"null".equals(estadoFinal.toString())) {
                         listaEstadosFinais.add(estadoFinal.toString());
+
+                        if(!this.getStates().contains(estadoFinal))
+                            throw new IllegalArgumentException();
+                        
                     }
                 }
             }

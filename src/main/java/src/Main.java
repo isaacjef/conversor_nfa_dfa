@@ -34,7 +34,7 @@ public class Main {
          * 
          * Fica a critério qual usaremos.
          */
-        System.out.print("Informe o diretório do JSON: ");
+        System.out.print("\nInforme o diretório do JSON: ");
         diretorioString = sc.nextLine();
 
         try {
@@ -74,10 +74,10 @@ public class Main {
             }
 
             for(int i=0; i < listaNFA.size(); i++){
-                System.out.printf("========= NFA %d =========\n", i+1);
+                System.out.printf("\n========= NFA %d =========\n", i+1);
                 System.out.print(listaNFA.get(i));
 
-                System.out.printf("========= DFA %d =========\n", i+1);
+                System.out.printf("\n========= DFA %d =========\n", i+1);
                 System.out.print(listaDFA.get(i));
             }
 
@@ -92,18 +92,18 @@ public class Main {
                     System.out.print("\nRecomeçando programa...\n");
                     System.out.println();
                     main(args);
-                    break;
+                break;
                     
                 case "N":
                     System.out.print("\n      FIM!         \n");
                     System.out.println("      ^.^ bye!         ");
-                    break;
+                break;
                 
                 default:
                     System.out.print("\nOpção não existente!\n");
                     System.out.println("      ^.^ bye!         ");
                     //main(args);
-                    break;
+                break;
             } 
 
         } catch (IndexOutOfBoundsException e) {
@@ -120,8 +120,6 @@ public class Main {
         }
 
     }
-
-    
 
 }
 
