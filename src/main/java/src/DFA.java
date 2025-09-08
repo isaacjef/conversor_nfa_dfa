@@ -77,7 +77,7 @@ public class DFA implements AutomatoFinito {
                 // Verifica se chaveprincipal de busca é do tipo List, para tratar quando "null"
                 if (chavePrincipal instanceof List) {
                     List<String> chavePrincList = (List<String>) chavePrincipal;
-                    List<String> end = new ArrayList<>();
+                    List<String> end;
 
                     // Percorre cada valor contido na matriz/tabela de estados possiveis
                     for (String estadoNFA : chavePrincList) {
@@ -117,7 +117,7 @@ public class DFA implements AutomatoFinito {
 
         Map<String, Map<String, String>> tabelaRenomeada = new HashMap<>();
         String renomear = "";
-        String chave_estado= "";
+        String chave_estado = "";
         ArrayList<String> trava_endstate = new ArrayList<>(this.end_state);
         String trava_initalstate = "" + this.initial_state;
         this.end_state.clear();
@@ -130,35 +130,29 @@ public class DFA implements AutomatoFinito {
                 List<String> estadoAtual = (List<String>) chavePrincipal;
                 //System.out.println("Estado inicial: " + trava_initalstate);
                 if (estadoAtual.equals(Arrays.asList(trava_initalstate))){
-                    
                     setInitial_state(estadosRenomeados.get(Arrays.asList(this.initial_state)));
                 }
                 
                 for (String end_stateAux : trava_endstate)
-
                     if (estadoAtual.contains(end_stateAux)) {
                         this.end_state.add(estadosRenomeados.get(chavePrincipal));
                         break;
                     }
-
             }
 
             Map<String, String> matrizAux2 = new HashMap<>();
 
             for (String alpha : this.alphabet) {
-
                 List<String> list_aux = matriz.get(chavePrincipal).get(alpha);
 
-
                 // Verificaçõa condicional para encontrar ocorrencias de "null" e substituir pelo seu nome
-                if (list_aux.size()==0) {
+                if (list_aux.isEmpty()) {
                     renomear = (estadosRenomeados.get(null));
                 } else {
                     renomear = (estadosRenomeados.get(list_aux));
                 }
 
                 matrizAux2.put(alpha, renomear);
-
             }
 
             chave_estado = estadosRenomeados.get(chavePrincipal);

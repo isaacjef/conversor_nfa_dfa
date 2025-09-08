@@ -20,11 +20,11 @@ public class Main {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String diretorioString="";
+        String diretorioString="C:\\\\Users\\\\Pichau\\\\Desktop\\\\conversor_nfa_dfa\\\\exemplo01.json";
         JSONObject jsonObject;
         JSONParser parser = new JSONParser();
-        ArrayList<NFA> listaNFA = new ArrayList<NFA>();
-        ArrayList<DFA> listaDFA = new ArrayList<DFA>();
+        ArrayList<NFA> listaNFA = new ArrayList<>();
+        ArrayList<DFA> listaDFA = new ArrayList<>();
 
         /*
          * Pensei de fazer assim pois dessa forma dá para tratar um possivel erro no diretório
@@ -41,11 +41,19 @@ public class Main {
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
             JSONArray listaNFAJsonArray = new JSONArray();
             
-            if(objetoJSON instanceof JSONArray) {
-                listaNFAJsonArray = (JSONArray) objetoJSON;
-            } else if(objetoJSON instanceof JSONObject){
-                listaNFAJsonArray.add((JSONObject) objetoJSON);
+            if(objetoJSON instanceof JSONArray jSONArray) {
+                listaNFAJsonArray = jSONArray;
+            } else if(objetoJSON instanceof JSONObject jSONObject){
+                listaNFAJsonArray.add(jSONObject);
             }
+
+            /* Código anterior:
+            if(objetoJSON instanceof JSONArray jSONArray) {
+                listaNFAJsonArray = jSONArray;
+            } else if(objetoJSON instanceof JSONObject jSONObject){
+                listaNFAJsonArray.add(jSONObject);
+            } 
+             */
             
             // Itera JSONArray e converte em NFA segundo método definido na própria classe
             for (Object obj : listaNFAJsonArray) {
@@ -82,18 +90,12 @@ public class Main {
             "Deseja tentar outro?(S | N): ");
             
             switch (sc.nextLine().toUpperCase()) {
-                case "S":
-                     //Chamada para recomeçar programa
+                case "S" -> //Chamada para recomeçar programa
                     System.out.print("\nRecomeçando programa\n");
-                    break;
                     
-                case "N":
-                    System.out.print("\nFIM!\n");
-                    break;
+                case "N" -> System.out.print("\nFIM!\n");
                 
-                default:
-                    System.out.print("\nOpção não existente!\n");
-                    break;
+                default -> System.out.print("\nOpção não existente!\n");
             } 
 
         } catch (Exception e) {
