@@ -3,8 +3,11 @@ package src;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -17,20 +20,11 @@ public class Main {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String diretorioString="";
+        String diretorioString="C:\\Users\\Pichau\\Desktop\\conversor_nfa_dfa\\exemploNFA.json";
         JSONObject jsonObject;
         JSONParser parser = new JSONParser();
         ArrayList<NFA> listaNFA = new ArrayList<NFA>();
         ArrayList<DFA> listaDFA = new ArrayList<DFA>();
-        ArrayList<String> a = new ArrayList<String>();
-
-        a.add("a");
-        a.add("b");
-        a.add("c");
-
-        DFA dfa = new DFA();
-        NFA nfa = new NFA();
-        //System.out.println(ababa.gerarConjunto(a));
 
         /*
          * Pensei de fazer assim pois dessa forma dá para tratar um possivel erro no diretório
@@ -44,32 +38,31 @@ public class Main {
         //diretorioString = sc.nextLine();
 
         try {
-            Object aaaa = parser.parse(new FileReader("C:\\Users\\Pichau\\Desktop\\conversor_nfa_dfa\\exemploNFA.json"));
-            JSONObject obj = (JSONObject) aaaa;
-            nfa.NFAfromJSON(obj);
-            dfa.DFAfromNFA(nfa);
-            //tratar key
-            /*JSONArray listaT = (JSONArray) obj.get("transiction");
-
-
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
-            JSONArray listaNFAJsonArray;
-
+            JSONArray listaNFAJsonArray = new JSONArray();
             
-            if(objetoJSON instanceof JSONObject) {
-                listaNFAJsonArray = new JSONArray();
-                listaNFAJsonArray.add(objetoJSON);
-            } else
+            if(objetoJSON instanceof JSONArray) {
                 listaNFAJsonArray = (JSONArray) objetoJSON;
+            } else if(objetoJSON instanceof JSONObject){
+                listaNFAJsonArray.add((JSONObject) objetoJSON);
+            }
             
             // Itera JSONArray e converte em NFA segundo método definido na própria classe
             for (Object obj : listaNFAJsonArray) {
                 jsonObject = (JSONObject) obj;
                 NFA nfaExemplo = new NFA();
-                DFA dfaExemplo = new DFA();
+                DFA dfaExemplo = new DFA(); 
 
-                nfaExemplo.NFAfromJSON(jsonObject);
-                dfaExemplo.DFAfromNFA(nfaExemplo);
+                List<String> chavestestar = Arrays.asList("alphabet", "states", "transiction", "initial_state", "end_state");;
+
+                //Verifica se contém todas as chaves necessárias para ser considerado NFA
+                if (jsonObject.keySet().containsAll(chavestestar)){
+                    nfaExemplo.NFAfromJSON(jsonObject);
+                    dfaExemplo.DFAfromNFA(nfaExemplo);
+                } else {
+                    System.out.println("Não é um arquivo de json válido!");
+                    return; //Encerra o programa aqui mesmo
+                }
 
                 listaNFA.add(nfaExemplo);
                 listaDFA.add(dfaExemplo);
@@ -81,7 +74,7 @@ public class Main {
 
                 System.out.printf("========= DFA %d =========\n", i+1);
                 System.out.print(listaDFA.get(i));
-            }*/
+            }
 
         } catch (FileNotFoundException f) {
 

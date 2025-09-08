@@ -24,11 +24,11 @@ public class NFA implements AutomatoFinito {
                String initial_state,
                Map<String, Map<String, List<String>>> transiction){
 
-        this.alphabet = alphabet;
-        this.end_state = end_state;
-        this.states = states;
-        this.initial_state = initial_state;
-        this.transiction = transiction;
+        setAlphabet(alphabet);
+        setEnd_state(end_state);
+        setStates(states);
+        setInitial_state(initial_state);
+        setTransiction(transiction);
     }
 
     //Construtor para inicializar NFA vazio
@@ -45,12 +45,23 @@ public class NFA implements AutomatoFinito {
         // Atribuindo valores aos atributos da classe
         // Verificar questão da TIPAGEM das variaveis para mitigação de erros
         // Caso de haver garantia na tipagem do json não se faz necessário corrigir
-        setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
-        setStates(new ArrayList<>((JSONArray) json.get("states")));
-        setInitial_state((String) json.get("initial_state"));
-        setEnd_state(new ArrayList<>((JSONArray) json.get("end_state")));
-        setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
-        
+
+        try{
+            setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
+            setStates(new ArrayList<>((JSONArray) json.get("states")));
+            setInitial_state((String) json.get("initial_state"));
+            setEnd_state(new ArrayList<>((JSONArray) json.get("end_state")));
+            setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Valor ilegal no atributo do NFA");
+
+            // Inicializando NFA com valores vazios:
+            this.alphabet = new ArrayList<>();
+            this.end_state = new ArrayList<>();
+            this.states = new ArrayList<>();
+            this.initial_state="";
+            this.transiction = new HashMap<>();
+        }
     }
 
     //Método para vizualização direta do NFA no console
@@ -82,7 +93,7 @@ public class NFA implements AutomatoFinito {
         return text.toString();
     }
 
-    private static Map<String, Map<String, List<String>>> parametrizarTransiction(JSONArray jsonArray){
+    private Map<String, Map<String, List<String>>> parametrizarTransiction(JSONArray jsonArray){
 
         Map<String, Map<String, List<String>>> transiction = new HashMap<>();
 
@@ -92,12 +103,20 @@ public class NFA implements AutomatoFinito {
             String initial = (String) regra.get("initial");
             String simbolo = (String) regra.get("symbol");
             Object endObj = regra.get("end");
-
+            
+            // Ignora função de transição cuja entrada é ínvalida
+            if(!this.getStates().contains(initial) || !this.getAlphabet().contains(simbolo)){
+                throw new IllegalArgumentException();
+            }
             List<String> listaEstadosFinais = new ArrayList<>();
 
             if (endObj instanceof JSONArray){
                 // Tratar a TIPAGEM da variavel para mitigação de erros
                 JSONArray endArray = (JSONArray) endObj;
+
+                if(!this.getStates().containsAll(endArray)){
+                    throw new IllegalArgumentException();
+                }
 
                 //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
                 for (Object estadoFinal : endArray) {
@@ -132,36 +151,106 @@ public class NFA implements AutomatoFinito {
     /*
      * Divisão do código para gets e seters
      */
+    @Override
     public ArrayList<String> getAlphabet(){
-        return this.alphabet;
+        return new ArrayList<>(this.alphabet);
     }
 
-    public void setAlphabet(ArrayList<String> alphabet){
-        this.alphabet = alphabet;
+    @SuppressWarnings("unchecked")
+    @Override
+    public void setAlphabet(Object alphabet){
+
+        // Verificações condicionais para tudo, garantido tipagem correta dos valores
+        if (alphabet instanceof List){
+            ArrayList<?> alphabet0 = (ArrayList<?>) alphabet;
+            int cont=0;
+            for (Object precorrer : alphabet0){
+                if(precorrer instanceof String) {
+                    cont++;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+
+            }
+
+            if(cont==alphabet0.size()) {
+                this.alphabet = (ArrayList<String>) alphabet0;
+            }
+            
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
+    @Override
     public ArrayList<String> getEnd_state() {
-        return this.end_state;
+        return new ArrayList<String>(this.end_state);
     }
 
-    public void setEnd_state(ArrayList<String> end_state) {
-        this.end_state = end_state;
+    @SuppressWarnings("unchecked")
+    @Override
+    public void setEnd_state(Object end_state) {
+
+        // Verificações condicionais para tudo, garantido tipagem correta dos valores
+        if (end_state instanceof List){
+            ArrayList<?> end_state0 = (ArrayList<?>) end_state;
+            int cont=0;
+            for (Object precorrer : end_state0)
+                if(precorrer instanceof String)
+                    if(this.getStates().contains(precorrer))
+                        cont++;
+
+            if(cont==end_state0.size()){
+                this.end_state = (ArrayList<String>) end_state0;
+                //System.out.println(this.end_state);
+            }
+            else
+                throw new IllegalArgumentException();
+        }
     }
 
+    @Override
     public ArrayList<String> getStates() {
-        return this.states;
+        return new ArrayList<>(this.states);
     }
 
-    public void setStates(ArrayList<String> states) {
-        this.states = states;
+    @SuppressWarnings("unchecked")
+    @Override
+    public void setStates(Object states) {
+
+
+        // Verificações condicionais para tudo, garantido tipagem correta dos valores
+        if (states instanceof List){
+            ArrayList<?> states0 = (ArrayList<?>) states;
+            int cont=0;
+            for (Object precorrer : states0)
+                if(precorrer instanceof String)
+                    cont++;
+
+            if(cont==states0.size())
+                this.states = (ArrayList<String>) states0;
+            else
+                throw new IllegalArgumentException();
+        }
+
     }
 
+    @Override
     public String getInitial_state() {
-        return this.initial_state;
+        return "" + this.initial_state;
     }
 
-    public void setInitial_state(String initial_state) {
-        this.initial_state = initial_state;
+    @Override
+    public void setInitial_state(Object initial_state) {
+        
+        if(initial_state instanceof String) {
+            if(this.getStates().contains((String) initial_state))
+                this.initial_state = (String) initial_state;
+            else
+                throw new IllegalArgumentException();
+        } else
+            throw new IllegalArgumentException();
+
     }
 
     public Map<String, Map<String, List<String>>> getTransiction() {

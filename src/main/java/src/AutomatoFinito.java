@@ -1,28 +1,23 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public interface AutomatoFinito {
     public ArrayList<String> getAlphabet();
-    public void setAlphabet(ArrayList<String> param);
+    public void setAlphabet(Object param);
 
     public ArrayList<String> getEnd_state();
-    public void setEnd_state(ArrayList<String> param);
+    public void setEnd_state(Object param);
 
     public ArrayList<String> getStates();
-    public void setStates(ArrayList<String> param);
+    public void setStates(Object param);
 
     public String getInitial_state();
-    public void setInitial_state(String param);
+    public void setInitial_state(Object param);
 
     //Map<String, Map<String, List<String>>> transicoes = new HashMap<>();
-    public Map<String, Map<String, List<String>>> getTransiction();
-    public void setTransiction(Map<String, Map<String, List<String>>> param);
-
-    //public String stringfy();
-
+    //public Map<String, Map<String, String>> getTransiction();
+    //public void setTransiction(Map<String, Map<String, String>> param);
 }
 
 /**
