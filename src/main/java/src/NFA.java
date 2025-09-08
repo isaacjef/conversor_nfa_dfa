@@ -55,7 +55,7 @@ public final class NFA implements AutomatoFinito {
                 setEnd_state(new ArrayList<>((JSONArray) json.get("end_state")));
                 setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
             } catch (IllegalArgumentException e) {
-                System.out.println("Valor ilegal no atributo do NFA");
+                System.out.println("Erro na conversão do NFA -> " + e);
 
                 // Inicializando NFA com valores vazios:
                 this.alphabet = new ArrayList<>();
@@ -101,8 +101,10 @@ public final class NFA implements AutomatoFinito {
     private Map<String, Map<String, List<String>>> parametrizarTransiction(JSONArray jsonArray){
 
         Map<String, Map<String, List<String>>> transiction = new HashMap<>();
+        int cont = 0;
 
         for (Object objRegra : jsonArray) {
+            cont++;
 
             JSONObject regra = (JSONObject) objRegra;
             String initial = (String) regra.get("initial");
@@ -113,10 +115,10 @@ public final class NFA implements AutomatoFinito {
             List<String> chavestestar = Arrays.asList("initial", "symbol", "end");
 
             if (!(regra.keySet().containsAll(chavestestar) && chavestestar.containsAll(regra.keySet())))
-                throw new IndexOutOfBoundsException();
+                throw new IndexOutOfBoundsException("Campos da função de transição extrapola o definido: \"initial\"; \"symbol\"; \"end\"; ");
                 
             if(!this.getStates().contains(initial) || !this.getAlphabet().contains(simbolo)){
-                throw new IndexOutOfBoundsException();
+                throw new IndexOutOfBoundsException("Estado inicial não está contido nos Estados do NFA. | Alfabeto não contém o símbolo definido. ");
             }
             List<String> listaEstadosFinais = new ArrayList<>();
 
@@ -127,8 +129,9 @@ public final class NFA implements AutomatoFinito {
                     if (estadoFinal != null && !"null".equals(estadoFinal.toString())) {
                         listaEstadosFinais.add(estadoFinal.toString());
 
-                        if(!this.getStates().contains(estadoFinal))
-                            throw new IllegalArgumentException();
+                        //if(!this.getStates().contains(estadoFinal))
+                        if(!this.getStates().contains((String) estadoFinal))
+                            throw new IllegalArgumentException("Estado(s) final(is) não está contido nos Estados do NFA. ");
                     }
                 }
             }
@@ -150,6 +153,10 @@ public final class NFA implements AutomatoFinito {
              */
         }
 
+        if(cont < (this.getStates().size()*this.alphabet.size())) {
+            throw new IllegalArgumentException("Funções de transição faltantes. Corrija o arquivo JSON. ");
+        }
+
         return transiction;
     }
 
@@ -164,26 +171,23 @@ public final class NFA implements AutomatoFinito {
     @SuppressWarnings("unchecked")
     @Override
     public void setAlphabet(Object alphabet){
-
         // Verificações condicionais para tudo, garantido tipagem correta dos valores
         if (alphabet instanceof List){
             ArrayList<?> alphabet0 = (ArrayList<?>) alphabet;
             int cont=0;
-            for (Object precorrer : alphabet0){
-                if(precorrer instanceof String) {
+            for (Object percorrer : alphabet0){
+                if(percorrer instanceof String) {
                     cont++;
                 } else {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Símbolo(s) do Alfabeto inválido(s)!");
                 }
-
             }
 
             if(cont==alphabet0.size()) {
                 this.alphabet = (ArrayList<String>) alphabet0;
             }
-            
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Alfabeto inválido! Símbolos não são do tipo String. ");
         }
     }
 
@@ -200,17 +204,17 @@ public final class NFA implements AutomatoFinito {
         if (end_state instanceof List){
             ArrayList<?> end_state0 = (ArrayList<?>) end_state;
             int cont=0;
-            for (Object precorrer : end_state0)
-                if(precorrer instanceof String)
-                    if(this.getStates().contains(precorrer))
+            for (Object percorrer : end_state0)
+                if(percorrer instanceof String string)
+                    if(this.getStates().contains(string))
                         cont++;
-
             if(cont==end_state0.size()){
                 this.end_state = (ArrayList<String>) end_state0;
                 //System.out.println(this.end_state);
-            }
-            else
-                throw new IllegalArgumentException();
+            } else
+                throw new IllegalArgumentException("Estado final não contido no conjunto de Estados!");
+        } else {
+            throw new IllegalArgumentException("Estado(s) final(is) inválido(s)! ");
         }
     }
 
@@ -226,14 +230,15 @@ public final class NFA implements AutomatoFinito {
         if (states instanceof List){
             ArrayList<?> states0 = (ArrayList<?>) states;
             int cont=0;
-            for (Object precorrer : states0)
-                if(precorrer instanceof String)
+            for (Object percorrer : states0)
+                if(percorrer instanceof String)
                     cont++;
-
             if(cont==states0.size())
                 this.states = (ArrayList<String>) states0;
             else
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Estado não é do tipo String!");
+        } else {
+            throw new IllegalArgumentException("Estado(s) inválido(s)! ");
         }
     }
 
@@ -244,14 +249,13 @@ public final class NFA implements AutomatoFinito {
 
     @Override
     public void setInitial_state(Object initial_state) {
-        
         if(initial_state instanceof String string) {
             if(this.getStates().contains(string))
                 this.initial_state = string;
             else
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Estado inicial não existente nos Estados do NFA! ");
         } else
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Estado inicial inválido! Não é do tipo String. ");
     }
 
     public Map<String, Map<String, List<String>>> getTransiction() {
@@ -261,7 +265,6 @@ public final class NFA implements AutomatoFinito {
     public void setTransiction(Map<String, Map<String, List<String>>> transiction) {
         this.transiction = transiction;
     }
-    
 }
 
 /**

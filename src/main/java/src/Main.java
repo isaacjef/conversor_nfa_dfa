@@ -2,12 +2,14 @@ package src;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Main {
     /*
@@ -18,12 +20,11 @@ public class Main {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String diretorioString="";
+        String diretorioString="C:\\Users\\Pichau\\Desktop\\conversor_nfa_dfa\\exemplo.json";
         JSONObject jsonObject;
         JSONParser parser = new JSONParser();
-        ArrayList<NFA> listaNFA = new ArrayList<NFA>();
-        ArrayList<DFA> listaDFA = new ArrayList<DFA>();
-        //System.out.println(ababa.gerarConjunto(a));
+        ArrayList<NFA> listaNFA = new ArrayList<>();
+        ArrayList<DFA> listaDFA = new ArrayList<>();
 
         /*
          * Pensei de fazer assim pois dessa forma dá para tratar um possivel erro no diretório
@@ -33,18 +34,10 @@ public class Main {
          * 
          * Fica a critério qual usaremos.
          */
-        System.out.print("\nInforme o diretório do JSON: ");
-        diretorioString = sc.nextLine();
+        //System.out.print("\nInforme o diretório do JSON: ");
+        //diretorioString = sc.nextLine();
 
         try {
-            // Object aaaa = parser.parse(new FileReader("exemploNFA.json"));
-            // JSONObject obj = (JSONObject) aaaa;
-            // nfa.NFAfromJSON(obj);
-            // dfa.DFAfromNFA(nfa);
-            // //tratar key
-            // JSONArray listaT = (JSONArray) obj.get("transiction");
-
-
             Object objetoJSON = parser.parse(new FileReader(diretorioString));
             JSONArray listaNFAJsonArray = new JSONArray();
             
@@ -92,12 +85,10 @@ public class Main {
                     System.out.println();
                     main(args);
                 }
-                    
                 case "N" -> {
                     System.out.print("\n      FIM!         \n");
                     System.out.println("      ^.^ bye!         ");
                 }
-                
                 default -> {
                     System.out.print("\nOpção não existente!\n");
                     System.out.println("      ^.^ bye!         ");
@@ -110,7 +101,16 @@ public class Main {
             System.out.println("\nMensagem de erro:\nNão é um arquivo de json válido!");
             System.out.printf("O formato do \"%s\" não segue o padrão estabelecido\n\n", diretorioString);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            System.out.print("Erro de entrada! -> " + e);
+            
+        } catch (ParseException e) {
+            System.out.print("Erro na conversão do arquivo! Arquivo JSON inválido! -> " + e);
+            
+        } catch (ClassCastException e) {
+            System.out.print("Erro na conversão do arquivo! Algum campo do arquivo não segue o padrão definido. -> " + e);
+            
+        }catch (Exception e) {
 
             System.out.print("Não sei qual erro!");
 
