@@ -153,7 +153,7 @@ public final class NFA implements AutomatoFinito {
              */
         }
 
-        if(cont < (this.getStates().size()*this.alphabet.size())) {
+        if(cont != (this.getStates().size()*this.alphabet.size())) {
             throw new IllegalArgumentException("Funções de transição faltantes. Corrija o arquivo JSON. ");
         }
 
