@@ -54,9 +54,12 @@ public class Main {
 
             else if(objetoJSON instanceof JSONObject)
                 listaNFAJsonArray.add((JSONObject) objetoJSON);
+
+            int cont=0;
             
             // Itera JSONArray e converte em NFA segundo método definido na própria classe
             for (Object obj : listaNFAJsonArray) {
+                cont++;
                 jsonObject = (JSONObject) obj;
                 NFA nfaExemplo = new NFA();
                 DFA dfaExemplo = new DFA(); 
@@ -68,6 +71,7 @@ public class Main {
                 //chavestestar.containsAll(jsonObject.keySet());
                 nfaExemplo.NFAfromJSON(jsonObject);
                 dfaExemplo.DFAfromNFA(nfaExemplo);
+                dfaExemplo.DFAtoJson(""+cont);
 
                 listaNFA.add(nfaExemplo);
                 listaDFA.add(dfaExemplo);

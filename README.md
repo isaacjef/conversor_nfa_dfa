@@ -9,7 +9,7 @@ Instalar biblioteca "json-simple"
     [ X ] **Criar metodo para criação do conjunto das partes;**
     [ X ] **Criar conversor NFA em DFA.
     [   ] **Fazer tratamento de erros em cada etapa do NFA e DFA para verificar se são válidos
-    [   ] **Criar conversor de DFA para .json
+    [ X ] **Criar conversor de DFA para .json
 
 # 💾 Status do prjeto
 > :construction: Projeto em desenvolvimento :construction:
