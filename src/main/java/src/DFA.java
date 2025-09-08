@@ -194,8 +194,8 @@ public class DFA implements AutomatoFinito {
          * 
         */
          ArrayList<String> estadosAcessiveis = new ArrayList<>();
-        Set<String> statesVisitado = new HashSet<String>();
-        List<String> statesNaoPercorridos = new ArrayList<String>();
+        Set<String> statesVisitado = new HashSet<>();
+        List<String> statesNaoPercorridos = new ArrayList<>();
         statesNaoPercorridos.add(this.initial_state);
         statesVisitado.add(this.initial_state);
 
@@ -234,7 +234,7 @@ public class DFA implements AutomatoFinito {
         }
         //System.out.println(tabelaRenomeada);
 
-        setEnd_state(estadosAcessiveis);
+        setStates(estadosAcessiveis);
         setTransictionD(tabelaRenomeada);
 
         System.out.println("\nResultado final: " + tabelaRenomeada);
@@ -265,7 +265,7 @@ public class DFA implements AutomatoFinito {
         .forEach(entry -> {
             entry.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey())
             .forEach(trans -> {
-                String saida = trans.getValue().isEmpty() ? "null" : trans.getValue().toString();
+                String saida = trans.getValue().isEmpty() ? "null" : trans.getValue();
                 text.append(String.format("| (%s, %s) | %s\n", entry.getKey(), trans.getKey(), saida));});
         });
         text.append("\r------------------------\n");
@@ -308,7 +308,7 @@ public class DFA implements AutomatoFinito {
         // Organiza cada elemento com relação ao tamanha do array que o compõem.
         conjuntoDasPartes.sort(Comparator.comparingInt(List::size));
 
-        ArrayList<Object> conjuntoOrganizado = new ArrayList<Object>();
+        ArrayList<Object> conjuntoOrganizado = new ArrayList<>();
         for (List<String> aux : conjuntoDasPartes) {
             if (aux.isEmpty())
                 conjuntoOrganizado.add(null);
@@ -336,8 +336,8 @@ public class DFA implements AutomatoFinito {
         if (alphabet instanceof List){
             ArrayList<?> alphabet0 = (ArrayList<?>) alphabet;
             int cont=0;
-            for (Object precorrer : alphabet0)
-                if(precorrer instanceof String)
+            for (Object percorrer : alphabet0)
+                if(percorrer instanceof String)
                     cont++;
             if(cont==alphabet0.size())
                 this.alphabet = (ArrayList<String>) alphabet0;
@@ -360,8 +360,8 @@ public class DFA implements AutomatoFinito {
         if (end_state instanceof List){
             ArrayList<?> end_state0 = (ArrayList<?>) end_state;
             int cont=0;
-            for (Object precorrer : end_state0)
-                if(precorrer instanceof String)
+            for (Object percorrer : end_state0)
+                if(percorrer instanceof String)
                     cont++;
             if(cont==end_state0.size())
                 this.end_state = (ArrayList<String>) end_state0;
@@ -388,8 +388,8 @@ public class DFA implements AutomatoFinito {
         if (states instanceof List){
             ArrayList<?> states0 = (ArrayList<?>) states;
             int cont=0;
-            for (Object precorrer : states0)
-                if(precorrer instanceof String)
+            for (Object percorrer : states0)
+                if(percorrer instanceof String)
                     cont++;
 
             if(cont==states0.size())
@@ -406,8 +406,8 @@ public class DFA implements AutomatoFinito {
 
     @Override
     public void setInitial_state(Object initial_state) {
-        if(initial_state instanceof String) {
-                this.initial_state = (String) initial_state;
+        if(initial_state instanceof String string) {
+                this.initial_state = string;
         }
         else {
             throw new IllegalArgumentException();

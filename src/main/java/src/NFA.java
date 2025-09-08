@@ -110,14 +110,12 @@ public class NFA implements AutomatoFinito {
             }
             List<String> listaEstadosFinais = new ArrayList<>();
 
-            if (endObj instanceof JSONArray){
+            if (endObj instanceof JSONArray endArray) {
                 // Tratar a TIPAGEM da variavel para mitigação de erros
-                JSONArray endArray = (JSONArray) endObj;
-
                 if(!this.getStates().containsAll(endArray)){
                     throw new IllegalArgumentException();
                 }
-
+                
                 //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
                 for (Object estadoFinal : endArray) {
 
@@ -126,7 +124,21 @@ public class NFA implements AutomatoFinito {
                     }
                 }
             }
+            
+                // JSONArray endArray = (JSONArray) endObj;
 
+                // if(!this.getStates().containsAll(endArray)){
+                //     throw new IllegalArgumentException();
+                // }
+
+                // //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
+                // for (Object estadoFinal : endArray) {
+
+                //     if (estadoFinal != null && !"null".equals(estadoFinal.toString())) {
+                //         listaEstadosFinais.add(estadoFinal.toString());
+                //     }
+                // }
+                
             transiction.computeIfAbsent(initial, k -> new HashMap<>())
             .put(simbolo, listaEstadosFinais);
             /*
@@ -170,13 +182,11 @@ public class NFA implements AutomatoFinito {
                 } else {
                     throw new IllegalArgumentException();
                 }
-
             }
 
             if(cont==alphabet0.size()) {
                 this.alphabet = (ArrayList<String>) alphabet0;
             }
-            
         } else {
             throw new IllegalArgumentException();
         }
@@ -184,7 +194,7 @@ public class NFA implements AutomatoFinito {
 
     @Override
     public ArrayList<String> getEnd_state() {
-        return new ArrayList<String>(this.end_state);
+        return new ArrayList<>(this.end_state);
     }
 
     @SuppressWarnings("unchecked")
@@ -195,9 +205,9 @@ public class NFA implements AutomatoFinito {
         if (end_state instanceof List){
             ArrayList<?> end_state0 = (ArrayList<?>) end_state;
             int cont=0;
-            for (Object precorrer : end_state0)
-                if(precorrer instanceof String)
-                    if(this.getStates().contains(precorrer))
+            for (Object percorrer : end_state0)
+                if(percorrer instanceof String)
+                    if(this.getStates().contains(percorrer))
                         cont++;
 
             if(cont==end_state0.size()){
