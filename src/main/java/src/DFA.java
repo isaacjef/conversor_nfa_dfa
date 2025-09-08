@@ -226,7 +226,7 @@ public final class DFA implements AutomatoFinito {
         
         FileWriter writeFile = null;
 
-        Map<String, Object> dfaMap = new HashMap<>();
+        Map<String, Object> dfaMap = new LinkedHashMap();
         
         dfaMap.put("alphabet", this.getAlphabet());
         dfaMap.put("states", this.states);
