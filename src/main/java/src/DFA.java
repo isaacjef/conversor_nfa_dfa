@@ -188,21 +188,23 @@ public class DFA implements AutomatoFinito {
         statesVisitado.add(this.initial_state);
 
         for (int ij = 0; ij < statesNaoPercorridos.size(); ij++) {
-            
-            String stateAtual = statesNaoPercorridos.get(ij);
+            String currentState = statesNaoPercorridos.get(ij);
 
-            if (tabelaRenomeada.containsKey(stateAtual)) {
+            // Verifica se o estado atual tem transições definidas no grafo.
+            if (tabelaRenomeada.containsKey(currentState)) {
+                // Pega a coleção de todos os possíveis estados seguintes.
+                Collection<String> nextStates = tabelaRenomeada.get(currentState).values();
 
-                Collection<String> ProximoStates = tabelaRenomeada.get(stateAtual).values();
-
-                for (String proximoState : ProximoStates) {
-
-                    if (!statesVisitado.contains(proximoState)) {
-                        statesVisitado.add(proximoState);
-                        statesNaoPercorridos.add(proximoState);
+                // Itera sobre cada estado seguinte usando um enhanced for-loop (forEach).
+                for (String nextState : nextStates) {
+                    // Se o estado seguinte ainda não foi visitado...
+                    if (!statesVisitado.contains(nextState)) {
+                        // ...o adicionamos ao conjunto de visitados e à lista para ser processado mais tarde.
+                        statesVisitado.add(nextState);
+                        statesNaoPercorridos.add(nextState);
                     }
-
                 }
+
             }
         }
         estadosAcessiveis.addAll(statesVisitado);
@@ -364,7 +366,7 @@ public class DFA implements AutomatoFinito {
 
     @Override
     public ArrayList<String> getStates() {
-        return this.states;
+        return new  ArrayList<>(this.states);
     }
 
     @SuppressWarnings("unchecked")

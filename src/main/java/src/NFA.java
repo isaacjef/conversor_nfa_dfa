@@ -1,8 +1,6 @@
 package src;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +55,7 @@ public class NFA implements AutomatoFinito {
             setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
         } catch (IllegalArgumentException e) {
             System.out.println("Valor ilegal no atributo do NFA");
-            
+
             // Inicializando NFA com valores vazios:
             this.alphabet = new ArrayList<>();
             this.end_state = new ArrayList<>();
