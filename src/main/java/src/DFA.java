@@ -25,7 +25,7 @@ public class DFA implements AutomatoFinito {
                ArrayList<String> end_state,
                ArrayList<String> states,
                String initial_state,
-               Map<String, Map<String, String>> transiction){
+               Map<String, Map<String, String>> transiction) {
         try {
             setAlphabet(alphabet);
             setEnd_state(end_state);
@@ -53,10 +53,13 @@ public class DFA implements AutomatoFinito {
          */
 
         // Atribuição dos valores comuns entre NFA e DFA
-        this.alphabet = nfa1.getAlphabet();
-        this.end_state = nfa1.getEnd_state();
-        this.states = nfa1.getStates();
-        this.initial_state = nfa1.getInitial_state();
+        try {
+            setAlphabet(nfa1.getAlphabet());
+            setEnd_state(nfa1.getEnd_state());
+            setInitial_state(nfa1.getInitial_state());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Valor ilegal no atributo do DFA");
+        }
 
         // PASSO 2:  Criar todas as combinações possíveis entre os estados
         ArrayList<Object> combinacoes = gerarConjunto(nfa1.getStates());
@@ -100,7 +103,7 @@ public class DFA implements AutomatoFinito {
             matriz.put(chavePrincipal, matrizAux);
         }
         
-        //Leva ao passo 5
+        //Leva ao passo 5 e passo 6
         this.renomear_estados(combinacoes, matriz);
     }
 
@@ -128,10 +131,8 @@ public class DFA implements AutomatoFinito {
             if (chavePrincipal instanceof List) {
 
                 List<String> estadoAtual = (List<String>) chavePrincipal;
-                //System.out.println("Estado inicial: " + trava_initalstate);
-                if (estadoAtual.equals(Arrays.asList(trava_initalstate))){
+                if (estadoAtual.equals(Arrays.asList(trava_initalstate)))
                     setInitial_state(estadosRenomeados.get(Arrays.asList(this.initial_state)));
-                }
                 
                 for (String end_stateAux : trava_endstate)
                     if (estadoAtual.contains(end_stateAux)) {
@@ -159,35 +160,17 @@ public class DFA implements AutomatoFinito {
             this.states.add(chave_estado);
             tabelaRenomeada.put(chave_estado, matrizAux2);
 
-            //Leva ao Passo 6
-            this.deletar_inacessiveis(tabelaRenomeada);
         }
+        //System.out.println("Estados renomeados; " + estadosRenomeados);
+        //Leva ao Passo 6
+        this.deletar_inacessiveis(tabelaRenomeada);
+        
     }
 
     //PASSO 6: Descartar os estados inacessíveis
     public void deletar_inacessiveis(Map<String, Map<String, String>> tabelaRenomeada) {
-        /*
-         * 
-         * Fazendo a leitura de forma adequada teremos o retorno do tipo:
-         * 
-          Estado         | 0         | 1         |
-          ---------------+-----------+-----------+
-          null           | null      | null      |
-          -> [q0]        | [q0, q1]  | [q0]      |
-          [q1]           | null      | [q2]      |
-          * [q2]         | null      | null      |
-          [q0, q1]       | [q0, q1]  | [q0, q2]  |
-          * [q0, q2]     | [q0, q1]  | [q0]      |
-          * [q1, q2]     | null      | [q2]      |
-          * [q0, q1, q2] | [q0, q1]  | [q0, q2]  |
-         *
-         * 
-         * f(list_rename.isEmpty()) {
-                    tabelaRenomeda.put(alphabet, teste)
-                }/
-         * 
-        */
-         ArrayList<String> estadosAcessiveis = new ArrayList<>();
+  
+        ArrayList<String> estadosAcessiveis = new ArrayList<>();
         Set<String> statesVisitado = new HashSet<>();
         List<String> statesNaoPercorridos = new ArrayList<>();
         statesNaoPercorridos.add(this.initial_state);
@@ -213,9 +196,9 @@ public class DFA implements AutomatoFinito {
         }
         estadosAcessiveis.addAll(statesVisitado);
 
-        //System.out.println("\nEstados renomeada: " + estadosRenomeados);
-        System.out.println("\nTabela renomeada: " + tabelaRenomeada);
-        System.out.println("\nAcessiveis: " + estadosAcessiveis);
+        
+        // System.out.println("\nTabela renomeada: " + tabelaRenomeada);
+        // System.out.println("\nAcessiveis: " + estadosAcessiveis);
         
 
         for (String chavePrincipal : this.states) {
@@ -230,10 +213,10 @@ public class DFA implements AutomatoFinito {
 
         setStates(estadosAcessiveis);
         setTransictionD(tabelaRenomeada);
+        //System.out.println("\nEstados renomeada: " + estadosRenomeados);
 
-        System.out.println("\nResultado final: " + tabelaRenomeada);
+        //System.out.println("\nResultado final: " + tabelaRenomeada);
 
-        //Passo 7: Atribuir resultado ao atributo this.transiction
     }
 
     // Conversor de DFa em Json, ao final deve gerar o arquivo json
@@ -319,7 +302,7 @@ public class DFA implements AutomatoFinito {
      */
     @Override
     public ArrayList<String> getAlphabet(){
-        return this.alphabet;
+        return new ArrayList<String>(this.alphabet);
     }
 
     @SuppressWarnings("unchecked")
@@ -344,7 +327,7 @@ public class DFA implements AutomatoFinito {
 
     @Override
     public ArrayList<String> getEnd_state() {
-        return this.end_state;
+        return new ArrayList<String>(this.end_state);
     }
 
     @SuppressWarnings("unchecked")
@@ -366,7 +349,7 @@ public class DFA implements AutomatoFinito {
 
     @Override
     public ArrayList<String> getStates() {
-        return this.states;
+        return new ArrayList<String>(this.states);
     }
 
     @SuppressWarnings("unchecked")
@@ -416,9 +399,3 @@ public class DFA implements AutomatoFinito {
         this.transiction = transiction;
     }
 }
-
-/**
- * Classe NFA concluída
- * @author Gabriel Alexandre
- * @author github.com/isaacjef/
- */

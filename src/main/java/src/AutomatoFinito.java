@@ -15,9 +15,13 @@ public interface AutomatoFinito {
     public String getInitial_state();
     public void setInitial_state(Object param);
 
+
     //Map<String, Map<String, List<String>>> transicoes = new HashMap<>();
-    //public Map<String, Map<String, String>> getTransiction();
-    //public void setTransiction(Map<String, Map<String, String>> param);
+    // public Map<String, Map<String, List<String>>> getTransiction();
+    // public void setTransiction(Map<String, Map<String, List<String>>> param);
+
+    //public String stringfy();
+
 }
 
 /**

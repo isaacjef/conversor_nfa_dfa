@@ -1,6 +1,7 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,23 +46,32 @@ public class NFA implements AutomatoFinito {
         // Atribuindo valores aos atributos da classe
         // Verificar questão da TIPAGEM das variaveis para mitigação de erros
         // Caso de haver garantia na tipagem do json não se faz necessário corrigir
+        List<String> chavestestar = Arrays.asList("alphabet", "states", "transiction", "initial_state", "end_state");
+        
+        if (json.keySet().containsAll(chavestestar) && chavestestar.containsAll(json.keySet())) {
 
-        try{
-            setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
-            setStates(new ArrayList<>((JSONArray) json.get("states")));
-            setInitial_state((String) json.get("initial_state"));
-            setEnd_state(new ArrayList<>((JSONArray) json.get("end_state")));
-            setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
-        } catch (IllegalArgumentException e) {
-            System.out.println("Valor ilegal no atributo do NFA");
+            try{
+                setAlphabet(new ArrayList<>((JSONArray) json.get("alphabet")));
+                setStates(new ArrayList<>((JSONArray) json.get("states")));
+                setInitial_state((String) json.get("initial_state"));
+                setEnd_state(new ArrayList<>((JSONArray) json.get("end_state")));
+                setTransiction(parametrizarTransiction((JSONArray) json.get("transiction")));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Valor ilegal no atributo do NFA");
 
-            // Inicializando NFA com valores vazios:
-            this.alphabet = new ArrayList<>();
-            this.end_state = new ArrayList<>();
-            this.states = new ArrayList<>();
-            this.initial_state="";
-            this.transiction = new HashMap<>();
-        }
+                // Inicializando NFA com valores vazios:
+                this.alphabet = new ArrayList<>();
+                this.end_state = new ArrayList<>();
+                this.states = new ArrayList<>();
+                this.initial_state="";
+                this.transiction = new HashMap<>();
+            }
+
+        } else
+            throw new IndexOutOfBoundsException();
+
+        
+
     }
 
     //Método para vizualização direta do NFA no console
@@ -93,6 +103,7 @@ public class NFA implements AutomatoFinito {
         return text.toString();
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Map<String, List<String>>> parametrizarTransiction(JSONArray jsonArray){
 
         Map<String, Map<String, List<String>>> transiction = new HashMap<>();
@@ -105,40 +116,33 @@ public class NFA implements AutomatoFinito {
             Object endObj = regra.get("end");
             
             // Ignora função de transição cuja entrada é ínvalida
+            List<String> chavestestar = Arrays.asList("initial", "symbol", "end");
+
+            if (!(regra.keySet().containsAll(chavestestar) && chavestestar.containsAll(regra.keySet())))
+                throw new IndexOutOfBoundsException();
+                
             if(!this.getStates().contains(initial) || !this.getAlphabet().contains(simbolo)){
-                throw new IllegalArgumentException();
+                throw new IndexOutOfBoundsException();
             }
             List<String> listaEstadosFinais = new ArrayList<>();
 
-            if (endObj instanceof JSONArray endArray) {
+            if (endObj instanceof JSONArray){
                 // Tratar a TIPAGEM da variavel para mitigação de erros
-                if(!this.getStates().containsAll(endArray)){
-                    throw new IllegalArgumentException();
-                }
-                
+                JSONArray endArray = (JSONArray) endObj;
+
                 //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
                 for (Object estadoFinal : endArray) {
 
                     if (estadoFinal != null && !"null".equals(estadoFinal.toString())) {
                         listaEstadosFinais.add(estadoFinal.toString());
+
+                        if(!this.getStates().contains(estadoFinal))
+                            throw new IllegalArgumentException();
+                        
                     }
                 }
             }
-            
-                // JSONArray endArray = (JSONArray) endObj;
 
-                // if(!this.getStates().containsAll(endArray)){
-                //     throw new IllegalArgumentException();
-                // }
-
-                // //Remove o "null" caso dentro de um array, exemplo: ["q0","null"]
-                // for (Object estadoFinal : endArray) {
-
-                //     if (estadoFinal != null && !"null".equals(estadoFinal.toString())) {
-                //         listaEstadosFinais.add(estadoFinal.toString());
-                //     }
-                // }
-                
             transiction.computeIfAbsent(initial, k -> new HashMap<>())
             .put(simbolo, listaEstadosFinais);
             /*
@@ -163,7 +167,6 @@ public class NFA implements AutomatoFinito {
     /*
      * Divisão do código para gets e seters
      */
-    @Override
     public ArrayList<String> getAlphabet(){
         return new ArrayList<>(this.alphabet);
     }
@@ -182,19 +185,20 @@ public class NFA implements AutomatoFinito {
                 } else {
                     throw new IllegalArgumentException();
                 }
+
             }
 
             if(cont==alphabet0.size()) {
                 this.alphabet = (ArrayList<String>) alphabet0;
             }
+            
         } else {
             throw new IllegalArgumentException();
         }
     }
 
-    @Override
     public ArrayList<String> getEnd_state() {
-        return new ArrayList<>(this.end_state);
+        return new ArrayList<String>(this.end_state);
     }
 
     @SuppressWarnings("unchecked")
@@ -205,9 +209,9 @@ public class NFA implements AutomatoFinito {
         if (end_state instanceof List){
             ArrayList<?> end_state0 = (ArrayList<?>) end_state;
             int cont=0;
-            for (Object percorrer : end_state0)
-                if(percorrer instanceof String)
-                    if(this.getStates().contains(percorrer))
+            for (Object precorrer : end_state0)
+                if(precorrer instanceof String)
+                    if(this.getStates().contains(precorrer))
                         cont++;
 
             if(cont==end_state0.size()){
@@ -219,7 +223,6 @@ public class NFA implements AutomatoFinito {
         }
     }
 
-    @Override
     public ArrayList<String> getStates() {
         return new ArrayList<>(this.states);
     }
@@ -245,12 +248,10 @@ public class NFA implements AutomatoFinito {
 
     }
 
-    @Override
     public String getInitial_state() {
         return "" + this.initial_state;
     }
 
-    @Override
     public void setInitial_state(Object initial_state) {
         
         if(initial_state instanceof String) {
