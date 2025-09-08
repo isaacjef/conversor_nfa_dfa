@@ -15,16 +15,13 @@
         <artifactId>json-simple</artifactId>
         <version>1.1.1</version>
         </dependency>
-<<<<<<< HEAD
-=======
-
+        
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <!--<dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20250517</version>
         </dependency> -->
->>>>>>> main
     </dependencies>
 
     <properties>
