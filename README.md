@@ -2,6 +2,7 @@
 Objetivo: desenvolver um código que receba um arquivo JSON representando um Autômato Finito Não-Determinístico (NFA). O programa deverá ser capaz de converter o NFA em um Autômato Finito Determinístico (DFA)
 
 > MAVEN
+> Dependência utilizada: com.googlecode.json-simple
 
 # 📜 Objetivos:
     [ X ] **Criar conversor .json em NFA; **
@@ -11,7 +12,7 @@ Objetivo: desenvolver um código que receba um arquivo JSON representando um Aut
     [ X ] **Criar conversor de DFA para .json**
 
 # 💾 Status do prjeto
-> :construction: Projeto em finalizado :construction:
+> :construction: Projeto finalizado :construction:
 
 # 📦 Disposição do programa
      .
@@ -26,9 +27,11 @@ Objetivo: desenvolver um código que receba um arquivo JSON representando um Aut
      |                    └── Main.java
      ├── target
      ├── README.md
+     ├── pom.xml
      └── exemplo.json
         ├── blackjack_test.exs
         └── test_helper.exs
+    
      .
 
 # 🔧 Principais Funções
