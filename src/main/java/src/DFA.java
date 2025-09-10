@@ -271,12 +271,12 @@ public final class DFA implements AutomatoFinito {
 
             for (String alpha : transictionMap.get(chave).keySet()) {
 
-                JSONObject transictionJsonObject = new JSONObject();
+                Map<Object, Object> transictionJsonObject = new LinkedHashMap<>();
                 //System.out.println("Simbolo: " + alpha);
 
                 transictionJsonObject.put("initial", chave);
+				transictionJsonObject.put("symbol", alpha);
                 transictionJsonObject.put("end", transictionMap.get(chave).get(alpha));
-                transictionJsonObject.put("symbol", alpha);
                 transictionJsonArray.add(transictionJsonObject);
             }
             //transictionJsonArray.add(transictionJsonObject);
