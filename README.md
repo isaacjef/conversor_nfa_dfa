@@ -17,7 +17,6 @@ Objetivo: desenvolver um código que receba um arquivo JSON representando um Aut
      .
      ├── conversor_nfa_dfa
      │   └── src
-     
      │       └── main
      │           └── java
      |                └── src
