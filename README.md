@@ -13,7 +13,7 @@ Objetivo: desenvolver um código que receba um arquivo JSON representando um Aut
 # 💾 Status do prjeto
 > :construction: Projeto em finalizado :construction:
 
-# 📦 Disposição do progrma
+# 📦 Disposição do programa
      .
      ├── conversor_nfa_dfa
      │   └── src
