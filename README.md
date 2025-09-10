@@ -2,6 +2,7 @@
 Objetivo: desenvolver um código que receba um arquivo JSON representando um Autômato Finito Não-Determinístico (NFA). O programa deverá ser capaz de converter o NFA em um Autômato Finito Determinístico (DFA)
 
 > MAVEN
+
 > Dependência utilizada: com.googlecode.json-simple
 
 # 📜 Objetivos:
